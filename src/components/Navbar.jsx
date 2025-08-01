@@ -12,7 +12,11 @@ export default function Navbar({ handlePageIndex }) {
 
   return (
     <nav>
-      <button className="nav-dropdown-button" onClick={toggleIsShow}>
+      <button
+        className="nav-dropdown-button"
+        onClick={toggleIsShow}
+        aria-label="toggle-menu"
+      >
         <img
           src={!isShow ? hamburgerMenu : closeMenu}
           alt="hamburger menu"

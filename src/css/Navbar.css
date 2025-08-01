@@ -24,6 +24,7 @@ nav {
   border: none;
   padding: 1rem 1.5rem;
   font-size: 1.125rem;
+  font-family: inherit;
   text-align: left;
   cursor: pointer;
   transition: color 0.2s;
