@@ -1,0 +1,19 @@
+.info {
+  position: absolute;
+  bottom: 4.5rem;
+  right: max(3rem, 15%);
+  font-size: 1.5rem;
+}
+
+.info p {
+  margin-bottom: 0.25rem;
+}
+
+.info .links a {
+  text-decoration: none;
+  color: black;
+}
+
+.info .links a:hover {
+  color: var(--primary);
+}

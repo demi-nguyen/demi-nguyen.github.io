@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Navbar from "./Navbar";
+import Info from "./Info";
+import cursorImage from "../assets/cursor.png";
 
 function App() {
   const [pageIndex, setPageIndex] = useState(0);
@@ -13,7 +15,7 @@ function App() {
 
   function Content() {
     if (pageIndex === 0) {
-      return <p>Info</p>;
+      return <Info />;
     }
 
     if (pageIndex === 1) {
@@ -24,10 +26,10 @@ function App() {
   }
 
   return (
-    <>
-      <Navbar handlePageIndex={handlePageIndex} />
+    <div className="wrapper" style={{ cursor: `url(${cursorImage}), auto` }}>
+      <Navbar handlePageIndex={handlePageIndex} pageIndex={pageIndex} />
       <Content />
-    </>
+    </div>
   );
 }
 

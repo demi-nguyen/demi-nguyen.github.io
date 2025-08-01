@@ -1,7 +1,3 @@
-nav {
-  margin: 1.5rem;
-}
-
 .nav-dropdown-button {
   background-color: transparent;
   border: none;
@@ -30,6 +26,11 @@ nav {
   transition: color 0.2s;
 }
 
-.nav-dropdown li > button:hover {
-  color: #ff3333;
+.nav-dropdown li > button:not(:disabled):hover {
+  color: var(--primary);
+}
+
+.nav-dropdown li > button:disabled {
+  color: var(--text-muted);
+  cursor: auto;
 }

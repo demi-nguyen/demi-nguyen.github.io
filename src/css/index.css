@@ -5,8 +5,20 @@
   /* outline: solid red 1px; */
 }
 
+:root {
+  --primary: #ff3333;
+  --text-muted: rgb(149, 147, 147);
+}
+
 body {
-  font-family: "Inconsolata", serif;
+  font-family: "Inconsolata", "Courier New", Courier, monospace;
+  cursor: url("/assets/cursor.png"), auto;
+}
+
+.wrapper {
+  padding: 1.5rem;
+  position: relative;
+  min-height: 100vh;
 }
 
 .hidden {

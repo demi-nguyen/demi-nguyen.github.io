@@ -3,7 +3,7 @@ import hamburgerMenu from "../assets/hamburger-menu.svg";
 import closeMenu from "../assets/close.svg";
 import { useState } from "react";
 
-export default function Navbar({ handlePageIndex }) {
+export default function Navbar({ handlePageIndex, pageIndex }) {
   const [isShow, setIsShow] = useState(false);
 
   function toggleIsShow() {
@@ -26,16 +26,40 @@ export default function Navbar({ handlePageIndex }) {
       <div className={`nav-dropdown${isShow ? "" : " hidden"}`}>
         <ul>
           <li>
-            <button onClick={() => handlePageIndex(0)}>Info</button>
+            <NavLink
+              index={0}
+              title="Info"
+              pageIndex={pageIndex}
+              handlePageIndex={handlePageIndex}
+            />
           </li>
           <li>
-            <button onClick={() => handlePageIndex(1)}>Video Editing</button>
+            <NavLink
+              index={1}
+              title="Video Editing"
+              pageIndex={pageIndex}
+              handlePageIndex={handlePageIndex}
+            />
           </li>
           <li>
-            <button onClick={() => handlePageIndex(2)}>Posters</button>
+            <NavLink
+              index={2}
+              title="Posters"
+              pageIndex={pageIndex}
+              handlePageIndex={handlePageIndex}
+            />
           </li>
         </ul>
       </div>
     </nav>
+  );
+}
+
+function NavLink({ index, pageIndex, handlePageIndex, title }) {
+  const isCurrent = index === pageIndex;
+  return (
+    <button onClick={() => handlePageIndex(index)} disabled={isCurrent}>
+      {title}
+    </button>
   );
 }
