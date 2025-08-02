@@ -8,28 +8,109 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Videos() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const playerRef = useRef(null);
+  const [player, setPlayer] = useState(null);
+  const videos = [
+    { id: "VAmACbJgl8g", scaleX: 1.3, scaleY: 1.3 },
+    { id: "emMwV8KdneA", scaleX: 1.5, scaleY: 1.5 },
+    { id: "q3XTGZ6HuM8", scaleX: 1.5, scaleY: 1.5 },
+    { id: "hnV57V3CB0M", scaleX: 1.3, scaleY: 1.3 },
+  ];
+  const [videoIndex, setVideoIndex] = useState(0);
+  const [volume, setVolume] = useState(50);
 
-  function togglePlaying() {
-    setIsPlaying(!isPlaying);
-  }
+  useEffect(() => {
+    if (!window.YT) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      window.onYouTubeIframeAPIReady = loadPlayer;
+      document.body.appendChild(tag);
+    } else {
+      loadPlayer();
+    }
+  }, [videoIndex]);
+
+  const increaseVolume = () => {
+    const newVolume = Math.min(volume + 10, 100);
+    setVolume(newVolume);
+    player?.setVolume(newVolume);
+  };
+
+  const decreaseVolume = () => {
+    const newVolume = Math.max(volume - 10, 0);
+    setVolume(newVolume);
+    player?.setVolume(newVolume);
+  };
+
+  const nextVideo = () => {
+    if (videoIndex === videos.length - 1) return;
+    setVideoIndex(videoIndex + 1);
+  };
+
+  const prevVideo = () => {
+    if (videoIndex === 0) return;
+    setVideoIndex(videoIndex - 1);
+  };
+
+  const loadPlayer = () => {
+    const videoId = videos[videoIndex].id;
+
+    if (playerRef.current && player) {
+      player.destroy();
+    }
+
+    const ytPlayer = new window.YT.Player(playerRef.current, {
+      videoId,
+      playerVars: {
+        controls: 0,
+        modestbranding: 1,
+        rel: 0,
+        showinfo: 0,
+      },
+      events: {
+        onReady: (event) => {
+          const playerInstance = event.target;
+          playerInstance.seekTo(0.01); // Move off the very start
+          setPlayer(playerInstance);
+        },
+        onStateChange: (event) => {
+          const state = event.data;
+          if (state === window.YT.PlayerState.ENDED) {
+            ytPlayer.seekTo(0);
+            ytPlayer.pauseVideo();
+          } else if (state === window.YT.PlayerState.PAUSED) {
+            setIsPlaying(false);
+          } else if (state === window.YT.PlayerState.PLAYING) {
+            setIsPlaying(true);
+          }
+        },
+      },
+    });
+  };
+
+  const handlePlay = () => {
+    if (player) {
+      !isPlaying ? player.playVideo() : player.pauseVideo();
+    }
+  };
+
+  const iframeStyle = {
+    width: "100%",
+    height: "100%",
+    transform: `scaleX(${videos[videoIndex].scaleX}) scaleY(${videos[videoIndex].scaleY})`,
+  };
 
   return (
     <div className="frame">
       <div className="paper-border">
         <div className="paper">
-          <iframe
-            src="https://www.youtube.com/embed/emMwV8KdneA?autoplay=0&mute=0&rel=0&controls=0"
-            title="YouTube video player"
-            frameborder="0"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            allowfullscreen
-          ></iframe>
+          <div ref={playerRef} style={iframeStyle}></div>
         </div>
       </div>
       <div className="button-bar">
         <div className="button-bar-frame">
           <div className="buttons-attachment">
-            <button className="play-button" onClick={togglePlaying}>
+            <button className="play-button" onClick={handlePlay}>
               {isPlaying ? (
                 <img src={pause} />
               ) : (
@@ -63,16 +144,16 @@ export default function Videos() {
                 </svg>
               )}
             </button>
-            <button className="prev-button">
+            <button className="prev-button" onClick={prevVideo}>
               <img src={next} />
             </button>
-            <button className="next-button">
+            <button className="next-button" onClick={nextVideo}>
               <img src={next} />
             </button>
-            <button className="less-volume-button">
+            <button className="less-volume-button" onClick={decreaseVolume}>
               <img src={lessVolume} />
             </button>
-            <button className="more-volume-button">
+            <button className="more-volume-button" onClick={increaseVolume}>
               <img src={moreVolume} />
             </button>
           </div>
