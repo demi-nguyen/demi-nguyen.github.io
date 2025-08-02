@@ -1,0 +1,216 @@
+.frame {
+  width: 70%;
+  margin: 2rem 15% 15rem 15%;
+  min-height: 80vh;
+  border: solid 1px black;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+  padding: 1.5rem;
+  background-color: #c6c7c9;
+  display: flex;
+  position: relative;
+}
+
+.paper-border {
+  flex: 1;
+  box-shadow: 0 0 15px #a2a3a4;
+  position: relative;
+}
+
+.paper-border::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 0;
+  bottom: -6px;
+  width: 15px;
+  background-color: black;
+}
+
+.paper-border::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: 0;
+  bottom: -6px;
+  width: 15px;
+  background-color: black;
+}
+
+.paper {
+  background-color: #dfdfdf;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-left: 6px solid black;
+  border-right: 6px solid black;
+  z-index: 1;
+}
+
+.paper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0.75rem;
+  height: 100%;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.4), transparent);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.paper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.75rem;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.4), transparent);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.button-bar {
+  position: absolute;
+  width: calc(100% + 1.25rem);
+  height: 7.5rem;
+  background-color: #dfdfdf;
+  bottom: -7.5rem;
+  left: -0.75rem;
+  border: 1px solid black;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}
+
+.button-bar-frame {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.buttons-attachment {
+  background-color: #c6c7c9;
+  position: absolute;
+  left: 3.75rem;
+  top: 1.75rem;
+  bottom: 0;
+  width: 20rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  z-index: 1;
+}
+
+.buttons-attachment::before {
+  content: "";
+  position: absolute;
+  background-color: black;
+  top: 0;
+  bottom: 1.125rem;
+  left: 0;
+  width: 20rem;
+  z-index: 0;
+  border: none;
+}
+
+.buttons-attachment > button {
+  flex: 1;
+  background-color: #333132;
+  height: 4.5rem;
+  border: 1px solid black;
+  z-index: 1;
+  color: white;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  position: relative;
+}
+
+.buttons-attachment > button:nth-child(1) {
+  background-color: #d32727;
+}
+
+.buttons-attachment > button:nth-child(1) svg {
+  height: 60%;
+  width: 50%;
+}
+
+.buttons-attachment > button img,
+.buttons-attachment > button svg {
+  width: 45%;
+  height: 40%;
+}
+
+.play-button::after,
+.prev-button::after,
+.next-button::after,
+.less-volume-button::after,
+.more-volume-button::after {
+  content: "PLAY";
+  position: absolute;
+  left: 0.55rem;
+  font-size: 0.75rem;
+  bottom: -1.375rem;
+  color: black;
+}
+
+.prev-button::after {
+  content: "PREV";
+}
+
+.next-button::after {
+  content: "NEXT";
+}
+
+.less-volume-button::after {
+  content: "VOL DOWN";
+  left: -0.75rem;
+  right: -0.75rem;
+}
+
+.more-volume-button::after {
+  content: "VOL UP";
+  left: 0;
+}
+
+.frame-bottom {
+  position: absolute;
+  bottom: -1rem;
+  height: 1rem;
+  width: 92.5%;
+  left: 3.75%;
+  background-color: #c6c7c9;
+  border: solid 1px black;
+  border-top: none;
+  z-index: 0;
+}
+
+.frame-bottom-left {
+  position: absolute;
+  bottom: -1rem;
+  height: 1rem;
+  width: 2.5%;
+  left: 1.25%;
+  background-color: #dfdfdf;
+  border: solid 1px black;
+  border-right: none;
+  border-bottom-left-radius: 1rem;
+  z-index: 0;
+}
+
+.frame-bottom-right {
+  position: absolute;
+  bottom: -1rem;
+  height: 1rem;
+  width: 2.5%;
+  right: 1.25%;
+  background-color: #dfdfdf;
+  border: solid 1px black;
+  border-left: none;
+  border-bottom-right-radius: 1rem;
+  z-index: 0;
+}

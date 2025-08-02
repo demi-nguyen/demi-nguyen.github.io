@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navbar from "./Navbar";
 import Info from "./Info";
+import Videos from "./Videos";
 import cursorImage from "../assets/cursor.png";
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
     }
 
     if (pageIndex === 1) {
-      return <p>Videos</p>;
+      return <Videos />;
     }
 
     return <p>Posters</p>;

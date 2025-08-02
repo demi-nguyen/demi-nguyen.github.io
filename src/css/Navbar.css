@@ -1,3 +1,7 @@
+nav {
+  position: fixed;
+}
+
 .nav-dropdown-button {
   background-color: transparent;
   border: none;
