@@ -89,6 +89,29 @@
   position: relative;
 }
 
+.light-button {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  width: 3.25rem;
+  top: -0.5rem;
+  right: 0;
+  cursor: pointer;
+  transform-origin: 60% 50%;
+  transform: rotate(-90deg);
+  transition: transform 0.1s;
+}
+
+.light-button:active,
+.light-button.active {
+  transform: rotate(0);
+}
+
+.light-button img {
+  width: 100%;
+  height: 100%;
+}
+
 .buttons-attachment {
   background-color: #c6c7c9;
   position: absolute;
@@ -102,6 +125,30 @@
   gap: 0.75rem;
   padding: 0.5rem;
   z-index: 1;
+}
+
+.button-labels {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.5rem;
+  padding-top: 0;
+  position: absolute;
+  left: 3.75rem;
+  width: 20rem;
+  bottom: -1rem;
+  z-index: 2;
+  font-size: 0.75rem;
+}
+
+.play-label,
+.prev-label,
+.next-label {
+  margin-left: 0.75rem;
+  margin-right: 1.75rem;
+}
+
+.vol-down-label {
+  margin-right: 1.25rem;
 }
 
 .buttons-attachment::before {
@@ -128,53 +175,31 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
   cursor: pointer;
   position: relative;
+  transition: all 0.15s;
+}
+
+.buttons-attachment > button:active {
+  transform: translateY(3px);
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.8);
 }
 
 .buttons-attachment > button:nth-child(1) {
   background-color: #d32727;
 }
 
+.buttons-attachment > button:nth-child(2) img {
+  transform: scaleX(-1) scaleY(-1);
+}
+
 .buttons-attachment > button:nth-child(1) svg {
-  height: 60%;
-  width: 50%;
+  height: 37.5%;
+  width: 32.5%;
 }
 
 .buttons-attachment > button img,
 .buttons-attachment > button svg {
-  width: 45%;
-  height: 40%;
-}
-
-.play-button::after,
-.prev-button::after,
-.next-button::after,
-.less-volume-button::after,
-.more-volume-button::after {
-  content: "PLAY";
-  position: absolute;
-  left: 0.55rem;
-  font-size: 0.75rem;
-  bottom: -1.375rem;
-  color: black;
-}
-
-.prev-button::after {
-  content: "PREV";
-}
-
-.next-button::after {
-  content: "NEXT";
-}
-
-.less-volume-button::after {
-  content: "VOL DOWN";
-  left: -0.75rem;
-  right: -0.75rem;
-}
-
-.more-volume-button::after {
-  content: "VOL UP";
-  left: 0;
+  width: 30%;
+  height: 25%;
 }
 
 .frame-bottom {
