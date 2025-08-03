@@ -7,8 +7,26 @@
 
 :root {
   font-size: 1vw;
-  --primary: #ff3333;
-  --text-muted: rgb(149, 147, 147);
+  /* fallback color */
+  --bg-dark: hsl(225, 3%, 78%);
+  --bg: hsl(0, 0%, 87%);
+  --bg-light: hsl(0, 0%, 100%);
+  --primary: hsl(0, 68%, 50%);
+  --secondary: hsl(345, 2%, 20%);
+  --text: hsl(0, 0%, 0%);
+  --text-light: hsl(0, 0%, 100%);
+  --text-muted: hsl(0, 2%, 58%);
+  --shadow: hsl(225, 2%, 63%);
+
+  --bg-dark: oklch(0.8297 0.0066 251.8);
+  --bg: oklch(0.9017 0.0031 269.7);
+  --bg-light: oklch(1 0 0);
+  --primary: oklch(0.5666 0.2337 29.2);
+  --secondary: oklch(0.2159 0.0158 20.8);
+  --text: oklch(0 0 0);
+  --text-light: oklch(1 0 0);
+  --text-muted: oklch(0.6024 0.0061 21.2);
+  --shadow: oklch(0.7426 0.0068 251.4);
 }
 
 body {

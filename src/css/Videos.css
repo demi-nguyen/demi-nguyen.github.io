@@ -6,14 +6,14 @@
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
   padding: 1.5rem;
-  background-color: #c6c7c9;
+  background-color: var(--bg-dark);
   display: flex;
   position: relative;
 }
 
 .paper-border {
   flex: 1;
-  box-shadow: 0 0 1rem #a2a3a4;
+  box-shadow: 0 0 1rem var(--shadow);
   position: relative;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .paper {
-  background-color: #dfdfdf;
+  background-color: var(--bg);
   width: 100%;
   height: 100%;
   position: relative;
@@ -60,15 +60,15 @@
   z-index: 4;
   background-image: repeating-linear-gradient(
       0deg,
-      #dfdfdf 0px,
-      #dfdfdf 1px,
+      var(--bg) 0px,
+      var(--bg) 1px,
       transparent 1px,
       transparent 2px
     ),
     repeating-linear-gradient(
       90deg,
-      #dfdfdf 0px,
-      #dfdfdf 1px,
+      var(--bg) 0px,
+      var(--bg) 1px,
       transparent 1px,
       transparent 2px
     );
@@ -107,7 +107,7 @@
   position: absolute;
   width: calc(100% + 1.25rem);
   height: 7.5rem;
-  background-color: #dfdfdf;
+  background-color: var(--bg);
   bottom: -7.5rem;
   left: -0.75rem;
   border: 1px solid black;
@@ -145,7 +145,7 @@
 }
 
 .buttons-attachment {
-  background-color: #c6c7c9;
+  background-color: var(--bg-dark);
   position: absolute;
   left: 3.75rem;
   top: 1.75rem;
@@ -201,7 +201,7 @@
   height: 4.5rem;
   border: 1px solid black;
   z-index: 1;
-  color: white;
+  color: var(--text-light);
   border-bottom-left-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
@@ -240,7 +240,7 @@
   height: 1rem;
   width: 92.5%;
   left: 3.75%;
-  background-color: #c6c7c9;
+  background-color: var(--bg-dark);
   border: solid 1px black;
   border-top: none;
   z-index: 0;
@@ -252,7 +252,7 @@
   height: 1rem;
   width: 2.5%;
   left: 1.25%;
-  background-color: #dfdfdf;
+  background-color: var(--bg);
   border: solid 1px black;
   border-right: none;
   border-bottom-left-radius: 1rem;
@@ -265,7 +265,7 @@
   height: 1rem;
   width: 2.5%;
   right: 1.25%;
-  background-color: #dfdfdf;
+  background-color: var(--bg);
   border: solid 1px black;
   border-left: none;
   border-bottom-right-radius: 1rem;
