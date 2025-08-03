@@ -29,6 +29,7 @@
   --shadow: oklch(0.7426 0.0068 251.4);
   --param-background: oklch(0.8115 0.0053 228.84);
   --param-fill: oklch(0.6401 0 0);
+  --nav-text: oklch(0 0 0);
 }
 
 body.dark {
@@ -43,6 +44,7 @@ body.dark {
   --shadow: oklch(0.1426 0.0068 251.4);
   --param-background: oklch(0.2115 0.0053 228.84);
   --param-fill: oklch(0.0401 0 0);
+  --nav-text: oklch(1 0 0);
 }
 
 body {
@@ -61,4 +63,13 @@ body {
 
 .hidden {
   display: none !important;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    min-height: 80vh;
+  }
+  :root {
+    font-size: 1.25vw;
+  }
 }

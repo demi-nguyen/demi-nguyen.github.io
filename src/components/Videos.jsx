@@ -17,7 +17,7 @@ export default function Videos() {
       id: "q3XTGZ6HuM8",
       style: { transform: "scaleX(1.3) scaleY(1.37) translateY(-1.5rem)" },
     },
-    { id: "hnV57V3CB0M", style: { transform: "scale(1.3)" } },
+    { id: "hnV57V3CB0M", style: { transform: "scale(1)" } },
   ];
   const [videoIndex, setVideoIndex] = useState(0);
   const [prevVideoIndex, setPrevVideoIndex] = useState(-1);
@@ -27,10 +27,10 @@ export default function Videos() {
   function toggleIsLightOn() {
     if (isLightOn) {
       document.body.classList.add("dark");
-      playerRef.current.style.boxShadow = "0 0 5rem rgba(255, 255, 255, 0.8)";
+      // playerRef.current.style.boxShadow = "0 0 5rem rgba(255, 255, 255, 0.8)";
     } else {
       document.body.classList.remove("dark");
-      playerRef.current.style.boxShadow = "none";
+      // playerRef.current.style.boxShadow = "none";
     }
     setIsLightOn(!isLightOn);
   }

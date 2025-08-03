@@ -7,8 +7,8 @@ nav {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  width: 5rem;
-  height: 5rem;
+  width: max(5rem, 60px);
+  height: max(5rem, 60px);
 }
 
 .nav-dropdown-button img {
@@ -19,7 +19,8 @@ nav {
 .nav-dropdown {
   border: black 1px solid;
   width: fit-content;
-  margin-left: 0.5rem;
+  margin-left: max(0.5rem, 8px);
+  background-color: var(--bg-light);
 }
 
 .nav-dropdown ul {
@@ -30,8 +31,9 @@ nav {
   width: 100%;
   background-color: transparent;
   border: none;
-  padding: 1rem 1.5rem;
-  font-size: 1.125rem;
+  color: var(--nav-text);
+  padding: max(1rem, 14px) max(1.5rem, 20px);
+  font-size: max(1.125rem, 16px);
   font-family: inherit;
   text-align: left;
   cursor: pointer;
@@ -39,10 +41,10 @@ nav {
 }
 
 .nav-dropdown li > button:not(:disabled):hover {
-  color: var(--primary);
+  color: red;
 }
 
 .nav-dropdown li > button:disabled {
-  color: var(--text-muted);
+  color: rgb(185, 173, 173);
   cursor: auto;
 }

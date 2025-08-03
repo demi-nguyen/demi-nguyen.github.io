@@ -2,7 +2,7 @@
   position: absolute;
   bottom: 4.5rem;
   right: max(3rem, 15%);
-  font-size: 1.5rem;
+  font-size: max(1.5rem, 20px);
 }
 
 .info p {
