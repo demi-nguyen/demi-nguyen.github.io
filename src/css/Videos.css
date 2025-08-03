@@ -49,6 +49,32 @@
   overflow: hidden;
 }
 
+.blur-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background-image: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.6) 0px,
+      rgba(0, 0, 0, 0.6) 1px,
+      transparent 1px,
+      transparent 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.6) 0px,
+      rgba(0, 0, 0, 0.6) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+  mix-blend-mode: multiply;
+
+  backdrop-filter: blur(30px) brightness(0.5) saturate(0.3);
+}
+
 .paper::after {
   content: "";
   position: absolute;

@@ -89,9 +89,15 @@ export default function Videos() {
   };
 
   const handlePlay = () => {
-    if (player) {
-      !isPlaying ? player.playVideo() : player.pauseVideo();
-    }
+    !isPlaying ? playPlayer() : pausePlayer();
+  };
+
+  const pausePlayer = () => {
+    player?.pauseVideo();
+  };
+
+  const playPlayer = () => {
+    player?.playVideo();
   };
 
   const iframeStyle = {
@@ -106,6 +112,8 @@ export default function Videos() {
         <div className="paper">
           <div ref={playerRef} style={iframeStyle}></div>
         </div>
+        {!isPlaying && <div className="blur-overlay"></div>}
+        {!isPlaying && <div className="bottom-overlay"></div>}
       </div>
       <div className="button-bar">
         <div className="button-bar-frame">
@@ -164,7 +172,11 @@ export default function Videos() {
             <p className="vol-down-label">VOL DOWN</p>
             <p className="vol-up-label">VOL UP</p>
           </div>
-          <DraggableParameter />
+          <DraggableParameter
+            player={player}
+            pausePlayer={pausePlayer}
+            playPlayer={playPlayer}
+          />
           <LightButton />
         </div>
         <div className="frame-bottom-left"></div>
@@ -192,11 +204,13 @@ function LightButton() {
   );
 }
 
-function DraggableParameter() {
+function DraggableParameter({ player, pausePlayer, playPlayer }) {
   const remValue = 16;
   const paramWidth = 32.5;
   const draggableRef = useRef(null);
   const paramFillRef = useRef(null);
+  const paramBarRef = useRef(null);
+  const isDraggingRef = useRef(false);
 
   const videoParamStyle = {
     position: "absolute",
@@ -224,41 +238,68 @@ function DraggableParameter() {
 
   const videoDraggableStyle = {
     position: "absolute",
-    top: "4rem",
+    top: "3.5rem",
     left: `26rem`,
     height: "1.25rem",
     width: "0.125rem",
     backgroundColor: "#8c8c8c",
     borderRadius: "0.1rem",
     cursor: "pointer",
-    padding: "0.5rem 0.25rem",
+    padding: "1rem 1rem",
     zIndex: "2",
   };
 
   useEffect(() => {
+    if (!player) return;
+
+    const interval = setInterval(() => {
+      if (isDraggingRef.current) return;
+      const current = player.getCurrentTime?.() || 0;
+      const duration = player.getDuration?.() || 1;
+      const progress = current / duration;
+      updateProgressBar(progress);
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [player]);
+
+  function updateProgressBar(progress) {
+    const maxWidth = paramWidth;
+    const valueInRem = progress * maxWidth;
+
+    draggableRef.current.style.left = `${26 + valueInRem}rem`;
+    paramFillRef.current.style.width = `${valueInRem}rem`;
+  }
+
+  useEffect(() => {
     const draggableDiv = draggableRef.current;
     const paramFill = paramFillRef.current;
-    let isFirstX = false;
     if (!draggableDiv || !paramFill) return;
 
-    let isDragging = false;
-    let startX = 0;
+    isDraggingRef.current = false;
+    const startX = paramBarRef.current.getBoundingClientRect().left;
 
     const handleMouseDown = (e) => {
-      isDragging = true;
-      if (!isFirstX) {
-        startX = e.clientX;
-        isFirstX = true;
-      }
-      draggableDiv.style.cursor = "grabbing";
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
+      pausePlayer();
+
+      setTimeout(() => {
+        isDraggingRef.current = true;
+        draggableDiv.style.cursor = "grabbing";
+
+        // Force a repaint to flush layout
+        draggableDiv.getBoundingClientRect();
+
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mouseup", handleMouseUp);
+      }, 100);
+
       e.preventDefault();
     };
 
     const handleMouseMove = (e) => {
-      if (!isDragging) return;
+      if (!isDraggingRef.current) return;
       const dx = e.clientX - startX;
+      // improve UX in dragging at the lower-end
       const remDx = dx / remValue > 0.1 ? dx / remValue : 0;
       if (remDx < paramWidth && remDx >= 0) {
         draggableDiv.style.left = `${26 + remDx}rem`;
@@ -267,8 +308,12 @@ function DraggableParameter() {
     };
 
     const handleMouseUp = () => {
-      isDragging = false;
+      isDraggingRef.current = false;
       draggableDiv.style.cursor = "grab";
+      const progress = (parseFloat(paramFill.style.width) || 0) / paramWidth;
+      player?.seekTo(player.getDuration() * progress, true);
+      playPlayer();
+
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
@@ -280,11 +325,15 @@ function DraggableParameter() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, []);
+  }, [player, pausePlayer, playPlayer]);
 
   return (
     <>
-      <div className="video-parameter" style={videoParamStyle}></div>
+      <div
+        className="video-parameter"
+        ref={paramBarRef}
+        style={videoParamStyle}
+      ></div>
       <div
         className="video-parameter-fill"
         ref={paramFillRef}
