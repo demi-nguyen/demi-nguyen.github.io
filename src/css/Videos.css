@@ -1,7 +1,7 @@
 .frame {
-  width: 70%;
-  margin: 2rem 15% 15rem 15%;
-  min-height: 80vh;
+  width: 65rem;
+  margin: 2rem auto 15rem auto;
+  min-height: 37rem;
   border: solid 1px black;
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
@@ -13,28 +13,30 @@
 
 .paper-border {
   flex: 1;
-  box-shadow: 0 0 15px #a2a3a4;
+  box-shadow: 0 0 1rem #a2a3a4;
   position: relative;
 }
 
 .paper-border::before {
   content: "";
   position: absolute;
-  top: -6px;
+  top: -0.4rem;
   left: 0;
-  bottom: -6px;
-  width: 15px;
+  bottom: -0.4rem;
+  width: 1.125rem;
   background-color: black;
+  z-index: 2;
 }
 
 .paper-border::after {
   content: "";
   position: absolute;
-  top: -6px;
+  top: -0.4rem;
   right: 0;
-  bottom: -6px;
-  width: 15px;
+  bottom: -0.4rem;
+  width: 1.125rem;
   background-color: black;
+  z-index: 2;
 }
 
 .paper {
@@ -42,9 +44,9 @@
   width: 100%;
   height: 100%;
   position: relative;
-  border-left: 6px solid black;
-  border-right: 6px solid black;
-  z-index: 1;
+  border-left: 0.4rem solid black;
+  border-right: 0.4rem solid black;
+  z-index: 3;
   padding: 0 1rem;
   overflow: hidden;
 }
@@ -53,20 +55,20 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
+  left: 0.25rem;
+  right: 0.25rem;
+  z-index: 4;
   background-image: repeating-linear-gradient(
       0deg,
-      rgba(0, 0, 0, 0.6) 0px,
-      rgba(0, 0, 0, 0.6) 1px,
+      #dfdfdf 0px,
+      #dfdfdf 1px,
       transparent 1px,
       transparent 2px
     ),
     repeating-linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.6) 0px,
-      rgba(0, 0, 0, 0.6) 1px,
+      #dfdfdf 0px,
+      #dfdfdf 1px,
       transparent 1px,
       transparent 2px
     );

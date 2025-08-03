@@ -17,40 +17,8 @@ export default function Videos() {
     { id: "hnV57V3CB0M", scaleX: 1.3, scaleY: 1.3 },
   ];
   const [videoIndex, setVideoIndex] = useState(0);
+  const [prevVideoIndex, setPrevVideoIndex] = useState(-1);
   const [volume, setVolume] = useState(50);
-
-  useEffect(() => {
-    if (!window.YT) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      window.onYouTubeIframeAPIReady = loadPlayer;
-      document.body.appendChild(tag);
-    } else {
-      loadPlayer();
-    }
-  }, [videoIndex]);
-
-  const increaseVolume = () => {
-    const newVolume = Math.min(volume + 10, 100);
-    setVolume(newVolume);
-    player?.setVolume(newVolume);
-  };
-
-  const decreaseVolume = () => {
-    const newVolume = Math.max(volume - 10, 0);
-    setVolume(newVolume);
-    player?.setVolume(newVolume);
-  };
-
-  const nextVideo = () => {
-    if (videoIndex === videos.length - 1) return;
-    setVideoIndex(videoIndex + 1);
-  };
-
-  const prevVideo = () => {
-    if (videoIndex === 0) return;
-    setVideoIndex(videoIndex - 1);
-  };
 
   const loadPlayer = () => {
     const videoId = videos[videoIndex].id;
@@ -86,6 +54,40 @@ export default function Videos() {
         },
       },
     });
+  };
+
+  if (videoIndex !== prevVideoIndex) {
+    if (!window.YT) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      window.onYouTubeIframeAPIReady = loadPlayer;
+      document.body.appendChild(tag);
+    } else {
+      loadPlayer();
+    }
+    setPrevVideoIndex(videoIndex);
+  }
+
+  const increaseVolume = () => {
+    const newVolume = Math.min(volume + 10, 100);
+    setVolume(newVolume);
+    player?.setVolume(newVolume);
+  };
+
+  const decreaseVolume = () => {
+    const newVolume = Math.max(volume - 10, 0);
+    setVolume(newVolume);
+    player?.setVolume(newVolume);
+  };
+
+  const nextVideo = () => {
+    if (videoIndex === videos.length - 1) return;
+    setVideoIndex(videoIndex + 1);
+  };
+
+  const prevVideo = () => {
+    if (videoIndex === 0) return;
+    setVideoIndex(videoIndex - 1);
   };
 
   const handlePlay = () => {
