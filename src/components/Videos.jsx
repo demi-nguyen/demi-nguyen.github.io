@@ -11,10 +11,13 @@ export default function Videos() {
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
   const videos = [
-    { id: "VAmACbJgl8g", scaleX: 1.3, scaleY: 1.3 },
-    { id: "emMwV8KdneA", scaleX: 1.5, scaleY: 1.5 },
-    { id: "q3XTGZ6HuM8", scaleX: 1.5, scaleY: 1.5 },
-    { id: "hnV57V3CB0M", scaleX: 1.3, scaleY: 1.3 },
+    { id: "VAmACbJgl8g", style: { transform: "scale(1.3)" } },
+    { id: "emMwV8KdneA", style: { transform: "scale(1.45)" } },
+    {
+      id: "q3XTGZ6HuM8",
+      style: { transform: "scaleX(1.3) scaleY(1.37) translateY(-1.5rem)" },
+    },
+    { id: "hnV57V3CB0M", style: { transform: "scale(1.3)" } },
   ];
   const [videoIndex, setVideoIndex] = useState(0);
   const [prevVideoIndex, setPrevVideoIndex] = useState(-1);
@@ -24,7 +27,7 @@ export default function Videos() {
   function toggleIsLightOn() {
     if (isLightOn) {
       document.body.classList.add("dark");
-      playerRef.current.style.boxShadow = "0 0 10rem rgba(255, 255, 255, 0.8)";
+      playerRef.current.style.boxShadow = "0 0 5rem rgba(255, 255, 255, 0.8)";
     } else {
       document.body.classList.remove("dark");
       playerRef.current.style.boxShadow = "none";
@@ -34,6 +37,14 @@ export default function Videos() {
 
   const loadPlayer = () => {
     const videoId = videos[videoIndex].id;
+
+    const iframeStyle = {
+      width: "100%",
+      height: "100%",
+      ...videos[videoIndex].style,
+    };
+
+    if (playerRef.current) Object.assign(playerRef.current.style, iframeStyle);
 
     if (playerRef.current && player) {
       player.destroy();
@@ -114,17 +125,11 @@ export default function Videos() {
     player?.playVideo();
   };
 
-  const iframeStyle = {
-    width: "100%",
-    height: "100%",
-    transform: `scaleX(${videos[videoIndex].scaleX}) scaleY(${videos[videoIndex].scaleY})`,
-  };
-
   return (
     <div className="frame">
       <div className="paper-border">
         <div className="paper">
-          <div ref={playerRef} style={iframeStyle}></div>
+          <div ref={playerRef}></div>
         </div>
         {!isPlaying && <div className="blur-overlay"></div>}
         {!isLightOn && !isPlaying && <div className="light-overlay"></div>}
