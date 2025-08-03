@@ -19,6 +19,18 @@ export default function Videos() {
   const [videoIndex, setVideoIndex] = useState(0);
   const [prevVideoIndex, setPrevVideoIndex] = useState(-1);
   const [volume, setVolume] = useState(50);
+  const [isLightOn, setIsLightOn] = useState(true);
+
+  function toggleIsLightOn() {
+    if (isLightOn) {
+      document.body.classList.add("dark");
+      playerRef.current.style.boxShadow = "0 0 10rem rgba(255, 255, 255, 0.8)";
+    } else {
+      document.body.classList.remove("dark");
+      playerRef.current.style.boxShadow = "none";
+    }
+    setIsLightOn(!isLightOn);
+  }
 
   const loadPlayer = () => {
     const videoId = videos[videoIndex].id;
@@ -115,7 +127,8 @@ export default function Videos() {
           <div ref={playerRef} style={iframeStyle}></div>
         </div>
         {!isPlaying && <div className="blur-overlay"></div>}
-        {!isPlaying && <div className="bottom-overlay"></div>}
+        {!isLightOn && !isPlaying && <div className="light-overlay"></div>}
+        {!isLightOn && <div className="light-shadow-overlay"></div>}
       </div>
       <div className="button-bar">
         <div className="button-bar-frame">
@@ -179,7 +192,7 @@ export default function Videos() {
             pausePlayer={pausePlayer}
             playPlayer={playPlayer}
           />
-          <LightButton />
+          <LightButton isOn={isLightOn} toggleIsOn={toggleIsLightOn} />
         </div>
         <div className="frame-bottom-left"></div>
         <div className="frame-bottom"></div>
@@ -189,13 +202,7 @@ export default function Videos() {
   );
 }
 
-function LightButton() {
-  const [isOn, setIsOn] = useState(false);
-
-  function toggleIsOn() {
-    setIsOn(!isOn);
-  }
-
+function LightButton({ isOn, toggleIsOn }) {
   return (
     <button
       className={`light-button${isOn ? " active" : ""}`}
@@ -221,7 +228,7 @@ function DraggableParameter({ player, pausePlayer, playPlayer }) {
     top: "4.5rem",
     left: "26rem",
     borderRadius: "0.1rem",
-    backgroundColor: "#bec2c4",
+    backgroundColor: "var(--param-background)",
     zIndex: "2",
   };
 
@@ -232,7 +239,7 @@ function DraggableParameter({ player, pausePlayer, playPlayer }) {
     top: "4.5rem",
     left: "26rem",
     borderRadius: "0.1rem",
-    backgroundColor: "#8c8c8c",
+    backgroundColor: "var(--param-fill)",
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
     zIndex: "2",
@@ -240,14 +247,14 @@ function DraggableParameter({ player, pausePlayer, playPlayer }) {
 
   const videoDraggableStyle = {
     position: "absolute",
-    top: "3.5rem",
+    top: "3.875rem",
     left: `26rem`,
     height: "1.25rem",
     width: "0.125rem",
-    backgroundColor: "#8c8c8c",
+    backgroundColor: "var(--param-fill)",
     borderRadius: "0.1rem",
     cursor: "pointer",
-    padding: "1rem 1rem",
+    padding: "0.75rem 0.75rem",
     zIndex: "2",
   };
 

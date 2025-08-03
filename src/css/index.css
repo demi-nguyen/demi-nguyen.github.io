@@ -27,11 +27,28 @@
   --text-light: oklch(1 0 0);
   --text-muted: oklch(0.6024 0.0061 21.2);
   --shadow: oklch(0.7426 0.0068 251.4);
+  --param-background: oklch(0.8115 0.0053 228.84);
+  --param-fill: oklch(0.6401 0 0);
+}
+
+body.dark {
+  --bg-dark: oklch(0.3297 0.0066 251.8);
+  --bg: oklch(0.4017 0.0031 269.7);
+  --bg-light: oklch(0.5 0 0); /* Dimmed white */
+  --primary: oklch(0.0666 0.2337 29.2);
+  --secondary: oklch(0 0.0158 20.8); /* Clamped to 0 */
+  --text: oklch(0 0 0); /* Unchanged */
+  --text-light: oklch(0.5 0 0); /* Dimmed white */
+  --text-muted: oklch(0.1024 0.0061 21.2);
+  --shadow: oklch(0.2426 0.0068 251.4);
+  --param-background: oklch(0.3115 0.0053 228.84);
+  --param-fill: oklch(0.1401 0 0);
 }
 
 body {
   font-family: "Inconsolata", "Courier New", Courier, monospace;
   cursor: url("/assets/cursor.png"), auto;
+  background-color: var(--bg-light);
 }
 
 .wrapper {
