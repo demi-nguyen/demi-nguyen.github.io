@@ -23,6 +23,7 @@ export default function Videos() {
   const [prevVideoIndex, setPrevVideoIndex] = useState(-1);
   const [volume, setVolume] = useState(50);
   const [isLightOn, setIsLightOn] = useState(true);
+  const tagRef = useState(null);
 
   function toggleIsLightOn() {
     if (isLightOn) {
@@ -81,15 +82,26 @@ export default function Videos() {
 
   if (videoIndex !== prevVideoIndex) {
     if (!window.YT) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
+      tagRef.current = document.createElement("script");
+      tagRef.current.src = "https://www.youtube.com/iframe_api";
       window.onYouTubeIframeAPIReady = loadPlayer;
-      document.body.appendChild(tag);
+      document.body.appendChild(tagRef.current);
     } else {
-      loadPlayer();
+      setTimeout(() => {
+        loadPlayer();
+      }, 150);
     }
     setPrevVideoIndex(videoIndex);
   }
+
+  useEffect(() => {
+    return () => {
+      if (tagRef.current && document.body.contains(tagRef.current)) {
+        document.body.removeChild(tagRef.current);
+        tagRef.current = null;
+      }
+    };
+  }, []);
 
   const increaseVolume = () => {
     const newVolume = Math.min(volume + 10, 100);
