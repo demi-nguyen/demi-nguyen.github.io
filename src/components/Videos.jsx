@@ -33,10 +33,8 @@ export default function Videos() {
   function toggleIsLightOn() {
     if (isLightOn) {
       document.body.classList.add("dark");
-      // playerRef.current.style.boxShadow = "0 0 5rem rgba(255, 255, 255, 0.8)";
     } else {
       document.body.classList.remove("dark");
-      // playerRef.current.style.boxShadow = "none";
     }
     setIsLightOn(!isLightOn);
   }
@@ -98,6 +96,10 @@ export default function Videos() {
         loadPlayer();
       }, 150);
     }
+
+    return () => {
+      document.body.classList.remove("dark");
+    };
   }, [videoIndex, isVert]);
 
   const increaseVolume = () => {
