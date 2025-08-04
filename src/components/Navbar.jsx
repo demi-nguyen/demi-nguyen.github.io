@@ -10,6 +10,11 @@ export default function Navbar({ handlePageIndex, pageIndex }) {
     setIsShow(!isShow);
   }
 
+  function handleNavLinkClicked(index) {
+    handlePageIndex(index);
+    toggleIsShow(false);
+  }
+
   return (
     <nav>
       <button
@@ -30,7 +35,7 @@ export default function Navbar({ handlePageIndex, pageIndex }) {
               index={0}
               title="Info"
               pageIndex={pageIndex}
-              handlePageIndex={handlePageIndex}
+              handleNavLinkClicked={handleNavLinkClicked}
             />
           </li>
           <li>
@@ -38,7 +43,7 @@ export default function Navbar({ handlePageIndex, pageIndex }) {
               index={1}
               title="Video Editing"
               pageIndex={pageIndex}
-              handlePageIndex={handlePageIndex}
+              handleNavLinkClicked={handleNavLinkClicked}
             />
           </li>
           <li>
@@ -46,7 +51,7 @@ export default function Navbar({ handlePageIndex, pageIndex }) {
               index={2}
               title="Posters"
               pageIndex={pageIndex}
-              handlePageIndex={handlePageIndex}
+              handleNavLinkClicked={handleNavLinkClicked}
             />
           </li>
         </ul>
@@ -55,10 +60,10 @@ export default function Navbar({ handlePageIndex, pageIndex }) {
   );
 }
 
-function NavLink({ index, pageIndex, handlePageIndex, title }) {
+function NavLink({ index, pageIndex, handleNavLinkClicked, title }) {
   const isCurrent = index === pageIndex;
   return (
-    <button onClick={() => handlePageIndex(index)} disabled={isCurrent}>
+    <button onClick={() => handleNavLinkClicked(index)} disabled={isCurrent}>
       {title}
     </button>
   );

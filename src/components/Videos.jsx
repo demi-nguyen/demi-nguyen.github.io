@@ -127,7 +127,7 @@ export default function Videos() {
   };
 
   const pausePlayer = () => {
-    player?.pauseVideo();
+    setTimeout(() => player?.pauseVideo(), 100);
   };
 
   const playPlayer = () => {
@@ -246,7 +246,7 @@ function LightButton({ isOn, toggleIsOn }) {
 
 function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
   const remValue = 16;
-  const paramWidth = !isVert ? 32.5 : 17.5;
+  const paramWidth = !isVert ? 32.5 : 13.5;
   const marginTop = !isVert ? 4.5 : 4;
   const draggableRef = useRef(null);
   const paramFillRef = useRef(null);
@@ -333,7 +333,7 @@ function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
 
         window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("mouseup", handleMouseUp);
-      }, 100);
+      }, 250);
 
       e.preventDefault();
     };

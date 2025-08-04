@@ -72,24 +72,44 @@
   left: 0.25rem;
   right: 0.25rem;
   z-index: 4;
+  overflow: hidden;
+}
+
+.blur-overlay::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: inherit;
+  filter: blur(30px) brightness(0.1) saturate(0.1);
+  z-index: -1;
+}
+
+.blur-overlay::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: rgba(255, 255, 255, 0.05);
   background-image: repeating-linear-gradient(
       0deg,
-      rgb(203, 196, 196) 0px,
-      rgb(203, 196, 196) 1px,
+      rgb(111, 110, 110) 0px,
+      rgb(111, 110, 110) 1px,
       transparent 1px,
       transparent 2px
     ),
     repeating-linear-gradient(
       90deg,
-      rgb(203, 196, 196) 0px,
-      rgb(203, 196, 196) 1px,
+      rgb(111, 110, 110) 0px,
+      rgb(111, 110, 110) 1px,
       transparent 1px,
       transparent 2px
     );
   mix-blend-mode: multiply;
-  backdrop-filter: blur(30px) brightness(0.5) saturate(0.3);
-  -webkit-backdrop-filter: blur(30px) brightness(0.5) saturate(0.3);
 }
 
 .paper::after {
@@ -335,7 +355,7 @@
   padding: 1rem 1.25rem;
   border-radius: 5rem;
   cursor: pointer;
-  color: black;
+  color: var(--nav-text);
 }
 
 .view-switch > button.active {
