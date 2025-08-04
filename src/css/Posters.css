@@ -1,0 +1,115 @@
+.poster-frame {
+  height: 50rem;
+  width: 40rem;
+  margin: 1rem auto;
+  border: solid 1px black;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+  padding: 1.5rem;
+  background-color: var(--bg);
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  clip-path: path("M0,0 H1000 V1000 H0 Z M0,220 Q60,135 0,60 Z");
+  transform: scaleX(-1);
+}
+
+.poster-frame .light-button {
+  right: auto;
+  left: 0;
+  transform: scaleX(-1);
+}
+
+.poster-frame .light-button:active,
+.poster-frame .light-button.active {
+  transform: rotate(-90deg);
+}
+
+.poster-frame .paper {
+  background-color: var(--bg-light);
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-top: 0.4rem solid black;
+  border-bottom: 0.4rem solid black;
+  border-left: none;
+  border-right: none;
+  z-index: 3;
+  padding: 0 1rem;
+  overflow: hidden;
+  clip-path: path(
+    "M0,0 H1000 V1000 H0 Q10,1 0,0 Z M0,0 H433 Q443,0 443,50 V3 H0 Z"
+  );
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  overflow: hidden;
+}
+
+.poster {
+  width: 100%;
+  height: auto;
+  transform: scaleX(-1);
+}
+
+.poster-frame .paper::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  top: auto;
+  right: 0;
+  height: 0.75rem;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  filter: blur(3px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.poster-frame .paper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0.75rem;
+  width: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+  filter: blur(3px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.poster-frame .paper-border {
+  justify-self: flex-start;
+  flex: 0.9;
+  position: relative;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.poster-frame .paper-border::before {
+  content: "";
+  position: absolute;
+  left: -0.15rem;
+  top: 0;
+  right: -0.15rem;
+  height: 1.125rem;
+  width: auto;
+  background-color: black;
+  z-index: 2;
+}
+
+.poster-frame .paper-border::after {
+  content: "";
+  position: absolute;
+  left: -0.1rem;
+  bottom: 0;
+  right: -0.2rem;
+  top: auto;
+  height: 1.125rem;
+  width: auto;
+  background-color: black;
+  z-index: 2;
+}

@@ -1,10 +1,10 @@
 import "../css/Videos.css";
 import pause from "../assets/pause.png";
 import next from "../assets/next.png";
-import light from "../assets/light.png";
 import lessVolume from "../assets/less-volume.png";
 import moreVolume from "../assets/more-volume.png";
 import { useEffect, useRef, useState } from "react";
+import LightButton from "./LightButton";
 
 export default function Videos() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -96,11 +96,13 @@ export default function Videos() {
         loadPlayer();
       }, 150);
     }
+  }, [videoIndex, isVert]);
 
+  useEffect(() => {
     return () => {
       document.body.classList.remove("dark");
     };
-  }, [videoIndex, isVert]);
+  }, []);
 
   const increaseVolume = () => {
     const newVolume = Math.min(volume + 10, 100);
@@ -232,17 +234,6 @@ export default function Videos() {
         </button>
       </div>
     </>
-  );
-}
-
-function LightButton({ isOn, toggleIsOn }) {
-  return (
-    <button
-      className={`light-button${isOn ? " active" : ""}`}
-      onClick={toggleIsOn}
-    >
-      <img src={light} />
-    </button>
   );
 }
 

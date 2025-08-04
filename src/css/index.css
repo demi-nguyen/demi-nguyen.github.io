@@ -58,7 +58,7 @@ body.dark {
 }
 
 body {
-  font-family: Helvetica, sans-serif;
+  font-family: "Inconsolata", "Courier New", Courier, monospace;
   cursor: url("/assets/cursor.png"), auto;
   background-color: var(--bg-light);
   color: black;
