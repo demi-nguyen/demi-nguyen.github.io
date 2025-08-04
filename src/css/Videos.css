@@ -13,7 +13,7 @@
 
 .frame.vert {
   transform: rotate(-90deg);
-  width: 44rem;
+  width: 43.5rem;
   min-height: 25.875rem;
   margin-top: 9rem;
   margin-right: 5.5rem;
@@ -333,9 +333,9 @@
   background-color: var(--bg-light);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 560px) {
   .frame.vert {
-    width: 62rem;
+    width: 61.5rem;
     min-height: 36rem;
     margin-bottom: 15rem;
   }
