@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Info from "./Info";
 import Videos from "./Videos";
 import cursorImage from "../assets/cursor.png";
+import Posters from "./Posters";
 
 function App() {
   const [pageIndex, setPageIndex] = useState(0);
@@ -23,7 +24,7 @@ function App() {
       return <Videos />;
     }
 
-    return <p>Posters</p>;
+    return <Posters />;
   }
 
   return (
