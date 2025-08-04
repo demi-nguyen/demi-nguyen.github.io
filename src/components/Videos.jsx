@@ -15,7 +15,7 @@ export default function Videos() {
     { id: "emMwV8KdneA", style: { transform: "scale(1.45)" } },
     {
       id: "q3XTGZ6HuM8",
-      style: { transform: "scaleX(1.3) scaleY(1.37) translateY(-1.5rem)" },
+      style: { transform: "scale(1)" },
     },
     { id: "hnV57V3CB0M", style: { transform: "scale(1)" } },
   ];
@@ -23,7 +23,6 @@ export default function Videos() {
   const [prevVideoIndex, setPrevVideoIndex] = useState(-1);
   const [volume, setVolume] = useState(50);
   const [isLightOn, setIsLightOn] = useState(true);
-  const tagRef = useState(null);
 
   function toggleIsLightOn() {
     if (isLightOn) {
@@ -82,10 +81,10 @@ export default function Videos() {
 
   if (videoIndex !== prevVideoIndex) {
     if (!window.YT) {
-      tagRef.current = document.createElement("script");
-      tagRef.current.src = "https://www.youtube.com/iframe_api";
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
       window.onYouTubeIframeAPIReady = loadPlayer;
-      document.body.appendChild(tagRef.current);
+      document.body.appendChild(tag);
     } else {
       setTimeout(() => {
         loadPlayer();
@@ -93,15 +92,6 @@ export default function Videos() {
     }
     setPrevVideoIndex(videoIndex);
   }
-
-  useEffect(() => {
-    return () => {
-      if (tagRef.current && document.body.contains(tagRef.current)) {
-        document.body.removeChild(tagRef.current);
-        tagRef.current = null;
-      }
-    };
-  }, []);
 
   const increaseVolume = () => {
     const newVolume = Math.min(volume + 10, 100);

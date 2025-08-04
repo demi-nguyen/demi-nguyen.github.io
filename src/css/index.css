@@ -6,7 +6,7 @@
 }
 
 :root {
-  font-size: 1vw;
+  font-size: calc(1px + 0.8vw);
   /* fallback color */
   --bg-dark: hsl(225, 3%, 78%);
   --bg: hsl(0, 0%, 87%);
