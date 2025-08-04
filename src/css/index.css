@@ -13,7 +13,6 @@
   --bg-light: hsl(0, 0%, 100%);
   --primary: hsl(0, 68%, 50%);
   --secondary: hsl(345, 2%, 20%);
-  --text: hsl(0, 0%, 0%);
   --text-light: hsl(0, 0%, 100%);
   --text-muted: hsl(0, 2%, 58%);
   --shadow: hsl(225, 2%, 63%);
@@ -23,7 +22,6 @@
   --bg-light: oklch(1 0 0);
   --primary: oklch(0.5666 0.2337 29.2);
   --secondary: oklch(0.2159 0.0158 20.8);
-  --text: oklch(0 0 0);
   --text-light: oklch(1 0 0);
   --text-muted: oklch(0.6024 0.0061 21.2);
   --shadow: oklch(0.7426 0.0068 251.4);
@@ -33,13 +31,25 @@
 }
 
 body.dark {
+  /* fallback color */
+  --bg-dark: hsl(251.8, 66%, 15%);
+  --bg: hsl(269.7, 31%, 21%);
+  --bg-light: hsl(0, 0%, 40%);
+  --primary: hsl(29.2, 100%, 0%);
+  --secondary: hsl(20.8, 10%, 0%);
+  --text-light: hsl(0, 0%, 40%);
+  --text-muted: hsl(21.2, 20%, 1%);
+  --shadow: hsl(251.4, 68%, 9%);
+  --param-background: hsl(228.84, 53%, 13%);
+  --param-fill: hsl(0, 0%, 4%);
+  --nav-text: hsl(0, 0%, 100%);
+
   --bg-dark: oklch(0.2297 0.0066 251.8);
   --bg: oklch(0.3017 0.0031 269.7);
-  --bg-light: oklch(0.4 0 0); /* Dimmed white */
+  --bg-light: oklch(0.4 0 0);
   --primary: oklch(0 0.2337 29.2);
   --secondary: oklch(0 0.0158 20.8);
-  --text: oklch(0 0 0); /* Unchanged */
-  --text-light: oklch(0.4 0 0); /* Dimmed white */
+  --text-light: oklch(0.4 0 0);
   --text-muted: oklch(0.0024 0.0061 21.2);
   --shadow: oklch(0.1426 0.0068 251.4);
   --param-background: oklch(0.2115 0.0053 228.84);

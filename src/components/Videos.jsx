@@ -10,6 +10,11 @@ export default function Videos() {
   const [isPlaying, setIsPlaying] = useState(false);
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
+  const [videoIndex, setVideoIndex] = useState(0);
+  const [volume, setVolume] = useState(50);
+  const [isLightOn, setIsLightOn] = useState(true);
+  const [isVert, setIsVert] = useState(false);
+
   const videos = [
     { id: "VAmACbJgl8g", style: { transform: "scale(1.3)" } },
     { id: "emMwV8KdneA", style: { transform: "scale(1.45)" } },
@@ -19,10 +24,11 @@ export default function Videos() {
     },
     { id: "hnV57V3CB0M", style: { transform: "scale(1)" } },
   ];
-  const [videoIndex, setVideoIndex] = useState(0);
-  const [prevVideoIndex, setPrevVideoIndex] = useState(-1);
-  const [volume, setVolume] = useState(50);
-  const [isLightOn, setIsLightOn] = useState(true);
+  const vertVideos = [
+    { id: "KRntP-q_R9s", style: { transform: "scale(1.75) rotate(90deg)" } },
+    { id: "32_H9s23jC4", style: { transform: "scale(1.75) rotate(90deg)" } },
+  ];
+  const videosLength = !isVert ? videos.length : vertVideos.length;
 
   function toggleIsLightOn() {
     if (isLightOn) {
@@ -35,51 +41,53 @@ export default function Videos() {
     setIsLightOn(!isLightOn);
   }
 
-  const loadPlayer = () => {
-    const videoId = videos[videoIndex].id;
+  useEffect(() => {
+    const loadPlayer = () => {
+      const video = !isVert ? videos[videoIndex] : vertVideos[videoIndex];
+      const videoId = video.id;
 
-    const iframeStyle = {
-      width: "100%",
-      height: "100%",
-      ...videos[videoIndex].style,
+      const iframeStyle = {
+        width: "100%",
+        height: "100%",
+        ...video.style,
+      };
+
+      if (playerRef.current)
+        Object.assign(playerRef.current.style, iframeStyle);
+
+      if (playerRef.current && player) {
+        player.destroy();
+      }
+
+      const ytPlayer = new window.YT.Player(playerRef.current, {
+        videoId,
+        playerVars: {
+          controls: 0,
+          modestbranding: 1,
+          rel: 0,
+          showinfo: 0,
+        },
+        events: {
+          onReady: (event) => {
+            const playerInstance = event.target;
+            playerInstance.seekTo(0.01); // Move off the very start
+            setPlayer(playerInstance);
+          },
+          onStateChange: (event) => {
+            const state = event.data;
+            if (state === window.YT.PlayerState.ENDED) {
+              ytPlayer.seekTo(0);
+              ytPlayer.pauseVideo();
+            } else if (state === window.YT.PlayerState.PAUSED) {
+              setIsPlaying(false);
+            } else if (state === window.YT.PlayerState.PLAYING) {
+              setIsPlaying(true);
+            }
+          },
+        },
+      });
     };
 
-    if (playerRef.current) Object.assign(playerRef.current.style, iframeStyle);
-
-    if (playerRef.current && player) {
-      player.destroy();
-    }
-
-    const ytPlayer = new window.YT.Player(playerRef.current, {
-      videoId,
-      playerVars: {
-        controls: 0,
-        modestbranding: 1,
-        rel: 0,
-        showinfo: 0,
-      },
-      events: {
-        onReady: (event) => {
-          const playerInstance = event.target;
-          playerInstance.seekTo(0.01); // Move off the very start
-          setPlayer(playerInstance);
-        },
-        onStateChange: (event) => {
-          const state = event.data;
-          if (state === window.YT.PlayerState.ENDED) {
-            ytPlayer.seekTo(0);
-            ytPlayer.pauseVideo();
-          } else if (state === window.YT.PlayerState.PAUSED) {
-            setIsPlaying(false);
-          } else if (state === window.YT.PlayerState.PLAYING) {
-            setIsPlaying(true);
-          }
-        },
-      },
-    });
-  };
-
-  if (videoIndex !== prevVideoIndex) {
     if (!window.YT) {
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
@@ -90,8 +98,7 @@ export default function Videos() {
         loadPlayer();
       }, 150);
     }
-    setPrevVideoIndex(videoIndex);
-  }
+  }, [videoIndex, isVert]);
 
   const increaseVolume = () => {
     const newVolume = Math.min(volume + 10, 100);
@@ -106,7 +113,7 @@ export default function Videos() {
   };
 
   const nextVideo = () => {
-    if (videoIndex === videos.length - 1) return;
+    if (videoIndex === videosLength - 1) return;
     setVideoIndex(videoIndex + 1);
   };
 
@@ -128,84 +135,101 @@ export default function Videos() {
   };
 
   return (
-    <div className="frame">
-      <div className="paper-border">
-        <div className="paper">
-          <div ref={playerRef}></div>
+    <>
+      <div className={`frame${isVert ? " vert" : ""}`}>
+        <div className="paper-border">
+          <div className="paper">
+            <div ref={playerRef} tabIndex={-1}></div>
+          </div>
+          {!isPlaying && <div className="blur-overlay"></div>}
+          {!isLightOn && !isPlaying && <div className="light-overlay"></div>}
+          {!isLightOn && <div className="light-shadow-overlay"></div>}
         </div>
-        {!isPlaying && <div className="blur-overlay"></div>}
-        {!isLightOn && !isPlaying && <div className="light-overlay"></div>}
-        {!isLightOn && <div className="light-shadow-overlay"></div>}
-      </div>
-      <div className="button-bar">
-        <div className="button-bar-frame">
-          <div className="buttons-attachment">
-            <button className="play-button" onClick={handlePlay}>
-              {isPlaying ? (
-                <img src={pause} />
-              ) : (
-                <svg
-                  fill="#FFFFFF"
-                  version="1.1"
-                  id="XMLID_213_"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlnsXlink="http://www.w3.org/1999/xlink"
-                  viewBox="-2.4 -2.4 28.80 28.80"
-                  xmlSpace="preserve"
-                >
-                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    stroke="#CCCCCC"
-                    strokeWidth="0.144"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    {" "}
-                    <g id="play">
+        <div className="button-bar">
+          <div className="button-bar-frame">
+            <div className="buttons-attachment">
+              <button className="play-button" onClick={handlePlay}>
+                {isPlaying ? (
+                  <img src={pause} />
+                ) : (
+                  <svg
+                    fill="#FFFFFF"
+                    version="1.1"
+                    id="XMLID_213_"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlnsXlink="http://www.w3.org/1999/xlink"
+                    viewBox="-2.4 -2.4 28.80 28.80"
+                    xmlSpace="preserve"
+                  >
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      stroke="#CCCCCC"
+                      strokeWidth="0.144"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
                       {" "}
-                      <g>
+                      <g id="play">
                         {" "}
-                        <path d="M4,24v-24l16.7,11.9L4,24z M6,4.1v16L17.3,12L6,4.1z"></path>{" "}
+                        <g>
+                          {" "}
+                          <path d="M4,24v-24l16.7,11.9L4,24z M6,4.1v16L17.3,12L6,4.1z"></path>{" "}
+                        </g>{" "}
                       </g>{" "}
-                    </g>{" "}
-                  </g>
-                </svg>
-              )}
-            </button>
-            <button className="prev-button" onClick={prevVideo}>
-              <img src={next} />
-            </button>
-            <button className="next-button" onClick={nextVideo}>
-              <img src={next} />
-            </button>
-            <button className="less-volume-button" onClick={decreaseVolume}>
-              <img src={lessVolume} />
-            </button>
-            <button className="more-volume-button" onClick={increaseVolume}>
-              <img src={moreVolume} />
-            </button>
+                    </g>
+                  </svg>
+                )}
+              </button>
+              <button className="prev-button" onClick={prevVideo}>
+                <img src={next} />
+              </button>
+              <button className="next-button" onClick={nextVideo}>
+                <img src={next} />
+              </button>
+              <button className="less-volume-button" onClick={decreaseVolume}>
+                <img src={lessVolume} />
+              </button>
+              <button className="more-volume-button" onClick={increaseVolume}>
+                <img src={moreVolume} />
+              </button>
+            </div>
+            <div className="button-labels">
+              <p className="play-label">PLAY</p>
+              <p className="prev-label">PREV</p>
+              <p className="next-label">NEXT</p>
+              <p className="vol-down-label">VOL DOWN</p>
+              <p className="vol-up-label">VOL UP</p>
+            </div>
+            <DraggableParameter
+              player={player}
+              pausePlayer={pausePlayer}
+              playPlayer={playPlayer}
+              isVert={isVert}
+            />
+            <LightButton isOn={isLightOn} toggleIsOn={toggleIsLightOn} />
           </div>
-          <div className="button-labels">
-            <p className="play-label">PLAY</p>
-            <p className="prev-label">PREV</p>
-            <p className="next-label">NEXT</p>
-            <p className="vol-down-label">VOL DOWN</p>
-            <p className="vol-up-label">VOL UP</p>
-          </div>
-          <DraggableParameter
-            player={player}
-            pausePlayer={pausePlayer}
-            playPlayer={playPlayer}
-          />
-          <LightButton isOn={isLightOn} toggleIsOn={toggleIsLightOn} />
+          <div className="frame-bottom-left"></div>
+          <div className="frame-bottom"></div>
+          <div className="frame-bottom-right"></div>
         </div>
-        <div className="frame-bottom-left"></div>
-        <div className="frame-bottom"></div>
-        <div className="frame-bottom-right"></div>
       </div>
-    </div>
+      <div className="view-switch">
+        <button
+          className={`toggle-vert${isVert ? " active" : ""}`}
+          onClick={() => setIsVert(true)}
+        >
+          VERT
+        </button>
+        <button
+          className={`toggle-horz${!isVert ? " active" : ""}`}
+          onClick={() => setIsVert(false)}
+        >
+          HORZ
+        </button>
+      </div>
+    </>
   );
 }
 
@@ -220,9 +244,10 @@ function LightButton({ isOn, toggleIsOn }) {
   );
 }
 
-function DraggableParameter({ player, pausePlayer, playPlayer }) {
+function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
   const remValue = 16;
-  const paramWidth = 32.5;
+  const paramWidth = !isVert ? 32.5 : 17.5;
+  const marginTop = !isVert ? 4.5 : 4;
   const draggableRef = useRef(null);
   const paramFillRef = useRef(null);
   const paramBarRef = useRef(null);
@@ -232,7 +257,7 @@ function DraggableParameter({ player, pausePlayer, playPlayer }) {
     position: "absolute",
     height: "0.25rem",
     width: `${paramWidth}rem`,
-    top: "4.5rem",
+    top: `${marginTop}rem`,
     left: "26rem",
     borderRadius: "0.1rem",
     backgroundColor: "var(--param-background)",
@@ -243,7 +268,7 @@ function DraggableParameter({ player, pausePlayer, playPlayer }) {
     position: "absolute",
     height: "0.25rem",
     width: `0rem`,
-    top: "4.5rem",
+    top: `${marginTop}rem`,
     left: "26rem",
     borderRadius: "0.1rem",
     backgroundColor: "var(--param-fill)",
@@ -254,7 +279,7 @@ function DraggableParameter({ player, pausePlayer, playPlayer }) {
 
   const videoDraggableStyle = {
     position: "absolute",
-    top: "3.875rem",
+    top: `${marginTop - 0.625}rem`,
     left: `26rem`,
     height: "1.25rem",
     width: "0.125rem",
@@ -293,7 +318,8 @@ function DraggableParameter({ player, pausePlayer, playPlayer }) {
     if (!draggableDiv || !paramFill) return;
 
     isDraggingRef.current = false;
-    const startX = paramBarRef.current.getBoundingClientRect().left;
+    const rect = paramBarRef.current.getBoundingClientRect();
+    const start = !isVert ? rect.left : rect.bottom;
 
     const handleMouseDown = (e) => {
       pausePlayer();
@@ -314,12 +340,12 @@ function DraggableParameter({ player, pausePlayer, playPlayer }) {
 
     const handleMouseMove = (e) => {
       if (!isDraggingRef.current) return;
-      const dx = e.clientX - startX;
-      // improve UX in dragging at the lower-end
-      const remDx = dx / remValue > 0.1 ? dx / remValue : 0;
-      if (remDx < paramWidth && remDx >= 0) {
-        draggableDiv.style.left = `${26 + remDx}rem`;
-        paramFill.style.width = `${remDx}rem`;
+      const distance = !isVert ? e.clientX - start : start - e.clientY;
+      // improve dragging at the lower-end UX
+      const remDistance = distance / remValue > 0.1 ? distance / remValue : 0;
+      if (remDistance < paramWidth && remDistance >= 0) {
+        draggableDiv.style.left = `${26 + remDistance}rem`;
+        paramFill.style.width = `${remDistance}rem`;
       }
     };
 
@@ -341,7 +367,7 @@ function DraggableParameter({ player, pausePlayer, playPlayer }) {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [player, pausePlayer, playPlayer]);
+  }, [player, pausePlayer, playPlayer, isVert, paramWidth]);
 
   return (
     <>
