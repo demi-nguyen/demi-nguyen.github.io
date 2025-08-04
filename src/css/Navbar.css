@@ -1,6 +1,7 @@
 nav {
   position: fixed;
   margin: 1.25rem;
+  z-index: 999;
 }
 
 .nav-dropdown-button {
