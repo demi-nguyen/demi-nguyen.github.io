@@ -334,6 +334,7 @@
   padding: 1rem 1.25rem;
   border-radius: 5rem;
   cursor: pointer;
+  color: black;
 }
 
 .view-switch > button.active {
