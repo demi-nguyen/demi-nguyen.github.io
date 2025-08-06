@@ -27,8 +27,8 @@ export default function Videos() {
 
   useEffect(() => {
     const videos = [
-      { id: "VAmACbJgl8g", style: { transform: "scale(1.3)" } },
-      { id: "emMwV8KdneA", style: { transform: "scale(1.45)" } },
+      { id: "VAmACbJgl8g", style: { transform: "scale(1)" } },
+      { id: "emMwV8KdneA", style: { transform: "scale(1)" } },
       {
         id: "q3XTGZ6HuM8",
         style: { transform: "scale(1)" },
@@ -274,14 +274,13 @@ function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
 
   const videoDraggableStyle = {
     position: "absolute",
-    top: `${marginTop - 0.625}rem`,
+    top: `${marginTop - 0.5}rem`,
     left: `26rem`,
     height: "1.25rem",
-    width: "0.125rem",
-    backgroundColor: "var(--param-fill)",
+    width: "1.25rem",
+    backgroundColor: "transparent",
     borderRadius: "0.1rem",
     cursor: "pointer",
-    padding: "0.75rem 0.75rem",
     zIndex: "2",
   };
 
@@ -301,7 +300,7 @@ function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
       const duration = player.getDuration?.() || 1;
       const progress = current / duration;
       updateProgressBar(progress);
-    }, 500);
+    }, 50);
 
     return () => clearInterval(interval);
   }, [player, paramWidth]);
