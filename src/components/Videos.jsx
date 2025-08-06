@@ -36,8 +36,11 @@ export default function Videos() {
       { id: "hnV57V3CB0M", style: { transform: "scale(1)" } },
     ];
     const vertVideos = [
-      { id: "KRntP-q_R9s", style: { transform: "scale(1.75) rotate(90deg)" } },
-      { id: "32_H9s23jC4", style: { transform: "scale(1.75) rotate(90deg)" } },
+      {
+        id: "9g_7z3eXuJI",
+        style: { transform: "scale(1.8) rotate(90deg)" },
+      },
+      { id: "jtyp5CFY6ZM", style: { transform: "scale(1.8) rotate(90deg)" } },
     ];
     videosLengthRef.current = !isVert ? videos.length : vertVideos.length;
 

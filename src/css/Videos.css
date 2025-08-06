@@ -1,8 +1,8 @@
 .frame {
   width: 65rem;
-  margin: 2rem auto 10rem auto;
+  margin: 2rem auto 11rem auto;
   min-height: 37rem;
-  border: solid 1px black;
+  border: 1px solid #505050;
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
   padding: 1.5rem;
@@ -13,9 +13,9 @@
 
 .frame.vert {
   transform: rotate(-90deg);
-  width: 43.5rem;
+  width: 44.5rem;
   min-height: 25.875rem;
-  margin-top: 9rem;
+  margin-top: 13rem;
   margin-right: 5.5rem;
 }
 
@@ -32,7 +32,9 @@
   left: 0;
   bottom: -0.4rem;
   width: 1.125rem;
-  background-color: black;
+  background-color: #505050;
+  border-top-left-radius: 0.2rem;
+  border-bottom-left-radius: 0.2rem;
   z-index: 2;
 }
 
@@ -43,14 +45,16 @@
   right: 0;
   bottom: -0.4rem;
   width: 1.125rem;
-  background-color: black;
+  border-top-right-radius: 0.2rem;
+  border-bottom-right-radius: 0.2rem;
+  background-color: #505050;
   z-index: 2;
 }
 
 .frame.vert .paper-border::before,
-.frame.vert.paper-border::after {
-  top: -0.2rem;
-  bottom: -0.2rem;
+.frame.vert .paper-border::after {
+  top: -0.4rem;
+  bottom: -0.4rem;
 }
 
 .paper {
@@ -58,10 +62,9 @@
   width: 100%;
   height: 100%;
   position: relative;
-  border-left: 0.4rem solid black;
-  border-right: 0.4rem solid black;
+  border-left: 0.4rem solid #505050;
+  border-right: 0.4rem solid #505050;
   z-index: 3;
-  padding: 0 1rem;
   overflow: hidden;
 }
 
@@ -98,7 +101,7 @@
   background-color: var(--bg);
   bottom: -7.5rem;
   left: -0.75rem;
-  border: 1px solid black;
+  border: 0.01rem solid #505050;
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
 }
@@ -130,7 +133,6 @@
 .light-button img {
   width: 100%;
   height: 100%;
-  color: black;
 }
 
 .light-overlay {
@@ -177,9 +179,10 @@
   position: absolute;
   left: 3.75rem;
   width: 20rem;
-  bottom: -1rem;
+  bottom: -1.3rem;
   z-index: 2;
   font-size: 0.75rem;
+  color: var(--nav-text);
 }
 
 .play-label,
@@ -196,7 +199,7 @@
 .buttons-attachment::before {
   content: "";
   position: absolute;
-  background-color: black;
+  background-color: #272727;
   top: 0;
   bottom: 1.125rem;
   left: 0;
@@ -209,7 +212,7 @@
   flex: 1;
   background-color: var(--secondary);
   height: 4.5rem;
-  border: 1px solid black;
+  border: 0.05rem solid #272727;
   z-index: 1;
   color: var(--text-light);
   border-bottom-left-radius: 0.25rem;
@@ -227,6 +230,7 @@
 
 .buttons-attachment > button:nth-child(1) {
   background-color: var(--primary);
+  border: 0.01rem solid #272727;
 }
 
 .buttons-attachment > button:nth-child(2) img {
@@ -255,24 +259,24 @@
 
 .frame-bottom {
   position: absolute;
-  bottom: -1rem;
-  height: 1rem;
+  bottom: -1.5rem;
+  height: 1.5rem;
   width: 92.5%;
   left: 3.75%;
   background-color: var(--bg-dark);
-  border: solid 1px black;
+  border: 1px solid var(--border);
   border-top: none;
   z-index: 0;
 }
 
 .frame-bottom-left {
   position: absolute;
-  bottom: -1rem;
-  height: 1rem;
+  bottom: -1.5rem;
+  height: 1.5rem;
   width: 2.5%;
   left: 1.25%;
   background-color: var(--bg);
-  border: solid 1px black;
+  border: 1px solid var(--border);
   border-right: none;
   border-bottom-left-radius: 1rem;
   z-index: 0;
@@ -280,12 +284,12 @@
 
 .frame-bottom-right {
   position: absolute;
-  bottom: -1rem;
-  height: 1rem;
+  bottom: -1.5rem;
+  height: 1.5rem;
   width: 2.5%;
   right: 1.25%;
   background-color: var(--bg);
-  border: solid 1px black;
+  border: 1px solid var(--border);
   border-left: none;
   border-bottom-right-radius: 1rem;
   z-index: 0;
@@ -294,19 +298,20 @@
 .view-switch {
   margin: 0 auto 5rem auto;
   background-color: var(--bg);
-  padding: 0.5rem;
+  padding: 0.35rem;
   display: flex;
   justify-content: center;
   border: none;
-  border-radius: 5rem;
+  border-radius: 5.35rem;
   gap: 0.25rem;
 }
 
 .view-switch > button {
   background-color: transparent;
   border: none;
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1rem;
   border-radius: 5rem;
+  font-size: 0.8rem;
   cursor: pointer;
   color: var(--nav-text);
 }
@@ -316,6 +321,10 @@
 }
 
 @media (max-width: 560px) {
+  .frame {
+    margin-top: 16rem;
+  }
+
   .frame.vert {
     width: 61.5rem;
     min-height: 36rem;

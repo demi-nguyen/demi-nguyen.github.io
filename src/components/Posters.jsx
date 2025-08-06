@@ -236,7 +236,7 @@ function InfoReset() {
           </svg>
         </button>
         {isShow && (
-          <p>Double click on the knobs to reset to their base value</p>
+          <p>Double-click on the knobs to reset them to their default values</p>
         )}
       </div>
     </div>
