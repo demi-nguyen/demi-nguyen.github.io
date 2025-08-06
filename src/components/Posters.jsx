@@ -185,7 +185,7 @@ export default function Posters() {
         handleAxis={setContainerYAxis}
         imgUrl={wheel}
         min={0}
-        max={270}
+        max={285}
       />
       <div className="frame-bottom-left"></div>
       <div className="frame-bottom">
@@ -377,30 +377,32 @@ function ZoomParameter({ setZoom, index, max }) {
   const zoomPerDistance = max / paramHeight;
   const remValue = 16;
 
-  const handleMouseDown = (e) => {
+  const handlePointerDown = (e) => {
     if (!draggableRef.current) return;
     isDraggingRef.current = true;
     draggableRef.current.style.cursor = "grabbing";
     const rect = draggableRef.current.getBoundingClientRect();
     startRef.current = rect.bottom;
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+
+    draggableRef.current.setPointerCapture(e.pointerId);
     e.preventDefault();
   };
 
-  const handleMouseMove = (e) => {
+  const handlePointerMove = (e) => {
     if (!isDraggingRef.current) return;
-    const distance = (startRef.current - e.clientY) / remValue;
+    let distance = (startRef.current - e.clientY) / remValue;
+    if (distance < 0.1) distance = 0; // improve UX
     if (distance < paramHeight && distance >= 0) {
       draggableRef.current.style.bottom = `${distance}rem`;
       setZoom(index, distance * zoomPerDistance);
     }
   };
 
-  const handleMouseUp = () => {
+  const handlePointerUp = (e) => {
     isDraggingRef.current = false;
-    window.removeEventListener("mousemove", handleMouseMove);
-    window.removeEventListener("mouseup", handleMouseUp);
+    if (draggableRef.current) {
+      draggableRef.current.releasePointerCapture(e.pointerId);
+    }
   };
 
   return (
@@ -410,7 +412,9 @@ function ZoomParameter({ setZoom, index, max }) {
       <div
         className="zoom-draggable"
         ref={draggableRef}
-        onMouseDown={handleMouseDown}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
       ></div>
       {[...Array(5)].map((_, index) => (
         <div className="zoom-meter" key={index}></div>

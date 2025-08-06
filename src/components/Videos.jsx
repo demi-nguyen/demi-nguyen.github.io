@@ -145,7 +145,6 @@ export default function Videos() {
           <div className="paper">
             <div ref={playerRef} tabIndex={-1}></div>
           </div>
-          {!isPlaying && <div className="blur-overlay"></div>}
           {!isLightOn && !isPlaying && <div className="light-overlay"></div>}
           {!isLightOn && <div className="light-shadow-overlay"></div>}
         </div>
@@ -244,6 +243,7 @@ function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
   const draggableRef = useRef(null);
   const paramFillRef = useRef(null);
   const paramBarRef = useRef(null);
+  const startRef = useRef(0);
   const isDraggingRef = useRef(false);
 
   const videoParamStyle = {
@@ -285,6 +285,13 @@ function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
 
   useEffect(() => {
     if (!player) return;
+    function updateProgressBar(progress) {
+      const maxWidth = paramWidth;
+      const valueInRem = progress * maxWidth;
+
+      draggableRef.current.style.left = `${26 + valueInRem}rem`;
+      paramFillRef.current.style.width = `${valueInRem}rem`;
+    }
 
     const interval = setInterval(() => {
       if (isDraggingRef.current) return;
@@ -295,72 +302,51 @@ function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
     }, 500);
 
     return () => clearInterval(interval);
-  }, [player]);
+  }, [player, paramWidth]);
 
-  function updateProgressBar(progress) {
-    const maxWidth = paramWidth;
-    const valueInRem = progress * maxWidth;
+  const handlePointerDown = (e) => {
+    pausePlayer();
 
-    draggableRef.current.style.left = `${26 + valueInRem}rem`;
-    paramFillRef.current.style.width = `${valueInRem}rem`;
-  }
+    setTimeout(() => {
+      isDraggingRef.current = true;
+      const rect = paramBarRef.current.getBoundingClientRect();
+      startRef.current = !isVert ? rect.left : rect.bottom;
+      draggableRef.current.style.cursor = "grabbing";
 
-  useEffect(() => {
-    const draggableDiv = draggableRef.current;
-    const paramFill = paramFillRef.current;
-    if (!draggableDiv || !paramFill) return;
+      // Force a repaint to flush layout
+      draggableRef.current.getBoundingClientRect();
 
+      draggableRef.current.setPointerCapture(e.pointerId);
+    }, 250);
+
+    e.preventDefault();
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDraggingRef.current) return;
+    const distance = !isVert
+      ? e.clientX - startRef.current
+      : startRef.current - e.clientY;
+    // improve dragging at the lower-end UX
+    const remDistance = distance / remValue > 0.1 ? distance / remValue : 0;
+    if (remDistance < paramWidth && remDistance >= 0) {
+      draggableRef.current.style.left = `${26 + remDistance}rem`;
+      paramFillRef.current.style.width = `${remDistance}rem`;
+    }
+  };
+
+  const handlePointerUp = (e) => {
     isDraggingRef.current = false;
-    const rect = paramBarRef.current.getBoundingClientRect();
-    const start = !isVert ? rect.left : rect.bottom;
+    draggableRef.current.style.cursor = "grab";
+    const progress =
+      (parseFloat(paramFillRef.current.style.width) || 0) / paramWidth;
+    player?.seekTo(player.getDuration() * progress, true);
+    playPlayer();
 
-    const handleMouseDown = (e) => {
-      pausePlayer();
-
-      setTimeout(() => {
-        isDraggingRef.current = true;
-        draggableDiv.style.cursor = "grabbing";
-
-        // Force a repaint to flush layout
-        draggableDiv.getBoundingClientRect();
-
-        window.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener("mouseup", handleMouseUp);
-      }, 250);
-
-      e.preventDefault();
-    };
-
-    const handleMouseMove = (e) => {
-      if (!isDraggingRef.current) return;
-      const distance = !isVert ? e.clientX - start : start - e.clientY;
-      // improve dragging at the lower-end UX
-      const remDistance = distance / remValue > 0.1 ? distance / remValue : 0;
-      if (remDistance < paramWidth && remDistance >= 0) {
-        draggableDiv.style.left = `${26 + remDistance}rem`;
-        paramFill.style.width = `${remDistance}rem`;
-      }
-    };
-
-    const handleMouseUp = () => {
-      isDraggingRef.current = false;
-      draggableDiv.style.cursor = "grab";
-      const progress = (parseFloat(paramFill.style.width) || 0) / paramWidth;
-      player?.seekTo(player.getDuration() * progress, true);
-      playPlayer();
-
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-
-    draggableDiv.addEventListener("mousedown", handleMouseDown);
-
-    return () => {
-      draggableDiv.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [player, pausePlayer, playPlayer, isVert, paramWidth]);
+    if (draggableRef.current) {
+      draggableRef.current.releasePointerCapture(e.pointerId);
+    }
+  };
 
   return (
     <>
@@ -377,6 +363,9 @@ function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
       <div
         className="video-parameter-draggable"
         ref={draggableRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
         style={videoDraggableStyle}
       ></div>
     </>
