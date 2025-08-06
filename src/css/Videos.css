@@ -2,7 +2,7 @@
   width: 65rem;
   margin: 2rem auto 11rem auto;
   min-height: 37rem;
-  border: 1px solid #505050;
+  border: 0.01rem solid #505050;
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
   padding: 1.5rem;
@@ -264,7 +264,7 @@
   width: 92.5%;
   left: 3.75%;
   background-color: var(--bg-dark);
-  border: 1px solid var(--border);
+  border: 0.01rem solid var(--border);
   border-top: none;
   z-index: 0;
 }
@@ -276,7 +276,7 @@
   width: 2.5%;
   left: 1.25%;
   background-color: var(--bg);
-  border: 1px solid var(--border);
+  border: 0.01rem solid var(--border);
   border-right: none;
   border-bottom-left-radius: 1rem;
   z-index: 0;
@@ -289,7 +289,7 @@
   width: 2.5%;
   right: 1.25%;
   background-color: var(--bg);
-  border: 1px solid var(--border);
+  border: 0.01rem solid var(--border);
   border-left: none;
   border-bottom-right-radius: 1rem;
   z-index: 0;

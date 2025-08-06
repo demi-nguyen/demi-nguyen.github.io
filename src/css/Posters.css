@@ -10,7 +10,7 @@
 .poster-frame {
   height: 100%;
   width: 100%;
-  border: solid 1px #505050;
+  border: solid 0.01rem #505050;
   border-radius: 0.75rem;
   padding: 1.5rem;
   background-color: var(--bg);
@@ -142,8 +142,12 @@
   z-index: 2;
 }
 
+.poster-frame .light-overlay {
+  opacity: 0.1;
+}
+
 .poster-frame .light-shadow-overlay {
-  box-shadow: 0 1.5rem 4rem -1rem rgba(255, 255, 255, 0.5);
+  box-shadow: 0 1.5rem 4rem -0.5rem rgba(255, 255, 255, 0.5);
 }
 
 .rotate-buttons {
@@ -230,8 +234,9 @@
 .zoom-container > p {
   position: absolute;
   transform: scaleX(-1);
-  top: -1.5rem;
+  top: -2rem;
   color: var(--nav-text);
+  font-size: 0.75rem;
 }
 
 .info-reset {

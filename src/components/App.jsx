@@ -7,6 +7,7 @@ import Posters from "./Posters";
 
 function App() {
   const [pageIndex, setPageIndex] = useState(0);
+  const [isLightOn, setIsLightOn] = useState(true);
 
   function handlePageIndex(index) {
     if (index === pageIndex) {
@@ -21,9 +22,9 @@ function App() {
     }
 
     if (pageIndex === 1) {
-      return <Videos />;
+      return <Videos isLightOn={isLightOn} setIsLightOn={setIsLightOn} />;
     }
-    return <Posters />;
+    return <Posters isLightOn={isLightOn} setIsLightOn={setIsLightOn} />;
   }
 
   return (

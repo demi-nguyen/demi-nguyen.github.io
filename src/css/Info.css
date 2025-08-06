@@ -7,13 +7,14 @@
 
 .info p {
   margin-bottom: 0.25rem;
+  color: var(--nav-text);
 }
 
 .info .links a {
   text-decoration: none;
-  color: black;
+  color: var(--nav-text);
 }
 
 .info .links a:hover {
-  color: var(--primary);
+  color: red;
 }

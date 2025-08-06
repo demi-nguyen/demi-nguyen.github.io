@@ -6,14 +6,13 @@ import moreVolume from "../assets/more-volume.png";
 import { useEffect, useRef, useState } from "react";
 import LightButton from "./LightButton";
 
-export default function Videos() {
+export default function Videos({ isLightOn, setIsLightOn }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
   const [videoIndex, setVideoIndex] = useState(0);
   const [volume, setVolume] = useState(50);
-  const [isLightOn, setIsLightOn] = useState(true);
-  const [isVert, setIsVert] = useState(false);
+  const [isVert, setIsVert] = useState(true);
   const videosLengthRef = useRef(0);
 
   function toggleIsLightOn() {
@@ -102,12 +101,6 @@ export default function Videos() {
       }, 150);
     }
   }, [videoIndex, isVert]);
-
-  useEffect(() => {
-    return () => {
-      document.body.classList.remove("dark");
-    };
-  }, []);
 
   const increaseVolume = () => {
     const newVolume = Math.min(volume + 10, 100);

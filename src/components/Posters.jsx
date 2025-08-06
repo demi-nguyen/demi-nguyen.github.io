@@ -11,8 +11,7 @@ import breath from "../assets/posters/Breathe-Ps.png";
 import porsche from "../assets/posters/Porsche.png";
 import yakult from "../assets/posters/Yakult-Ps.png";
 
-export default function Posters() {
-  const [isLightOn, setIsLightOn] = useState(true);
+export default function Posters({ isLightOn, setIsLightOn }) {
   const [containerYAxis, setContainerYAxis] = useState(0);
   const xLimit = { min: -10, max: 10 };
   const yLimit = { min: -10, max: 10 };
