@@ -330,10 +330,8 @@ function RotatableButton({
     const rem = mapDegToRem(newRotation);
     if (index >= 0) {
       handleAxis(index, rem);
-      console.log(`change poster ${index} value to ${rem}`);
     } else {
       handleAxis(rem);
-      console.log(`change value to ${rem}`);
     }
 
     prevAngle.current = currentAngle;
