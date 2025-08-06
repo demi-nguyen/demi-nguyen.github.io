@@ -161,6 +161,7 @@ export default function Posters() {
           index={currentEntryRef.current}
           max={maxZoom}
         />
+        <InfoReset />
         <div className="rotate-buttons">
           <RotatableButton
             handleAxis={handleXAxis}
@@ -192,6 +193,52 @@ export default function Posters() {
         <p>X-Axis</p>
       </div>
       <div className="frame-bottom-right"></div>
+    </div>
+  );
+}
+
+function InfoReset() {
+  const [isShow, setIsShow] = useState(false);
+
+  function toggleIsShow() {
+    setIsShow(!isShow);
+  }
+
+  return (
+    <div className="info-reset">
+      <div className="info-container">
+        <button onClick={toggleIsShow}>
+          {" "}
+          <svg
+            width="64px"
+            height="64px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="#6f6f71"
+            transform="rotate(0)matrix(1, 0, 0, 1, 0, 0)"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M13.6 3H10V6.6H13.6V3ZM13.6 10.2H10V21H13.6V10.2Z"
+                fill="#6f6f71"
+              ></path>{" "}
+            </g>
+          </svg>
+        </button>
+        {isShow && (
+          <p>Double click on the knobs to reset to their base value</p>
+        )}
+      </div>
     </div>
   );
 }
