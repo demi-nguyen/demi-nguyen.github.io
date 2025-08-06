@@ -14,21 +14,7 @@ export default function Videos() {
   const [volume, setVolume] = useState(50);
   const [isLightOn, setIsLightOn] = useState(true);
   const [isVert, setIsVert] = useState(false);
-
-  const videos = [
-    { id: "VAmACbJgl8g", style: { transform: "scale(1.3)" } },
-    { id: "emMwV8KdneA", style: { transform: "scale(1.45)" } },
-    {
-      id: "q3XTGZ6HuM8",
-      style: { transform: "scale(1)" },
-    },
-    { id: "hnV57V3CB0M", style: { transform: "scale(1)" } },
-  ];
-  const vertVideos = [
-    { id: "KRntP-q_R9s", style: { transform: "scale(1.75) rotate(90deg)" } },
-    { id: "32_H9s23jC4", style: { transform: "scale(1.75) rotate(90deg)" } },
-  ];
-  const videosLength = !isVert ? videos.length : vertVideos.length;
+  const videosLengthRef = useRef(0);
 
   function toggleIsLightOn() {
     if (isLightOn) {
@@ -40,7 +26,23 @@ export default function Videos() {
   }
 
   useEffect(() => {
+    const videos = [
+      { id: "VAmACbJgl8g", style: { transform: "scale(1.3)" } },
+      { id: "emMwV8KdneA", style: { transform: "scale(1.45)" } },
+      {
+        id: "q3XTGZ6HuM8",
+        style: { transform: "scale(1)" },
+      },
+      { id: "hnV57V3CB0M", style: { transform: "scale(1)" } },
+    ];
+    const vertVideos = [
+      { id: "KRntP-q_R9s", style: { transform: "scale(1.75) rotate(90deg)" } },
+      { id: "32_H9s23jC4", style: { transform: "scale(1.75) rotate(90deg)" } },
+    ];
+    videosLengthRef.current = !isVert ? videos.length : vertVideos.length;
+
     const loadPlayer = () => {
+      if (videoIndex > videosLengthRef.current - 1) setVideoIndex(0);
       const video = !isVert ? videos[videoIndex] : vertVideos[videoIndex];
       const videoId = video.id;
 
@@ -117,7 +119,7 @@ export default function Videos() {
   };
 
   const nextVideo = () => {
-    if (videoIndex === videosLength - 1) return;
+    if (videoIndex === videosLengthRef.current - 1) return;
     setVideoIndex(videoIndex + 1);
   };
 
