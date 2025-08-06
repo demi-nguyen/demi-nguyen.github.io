@@ -23,7 +23,6 @@ function App() {
     if (pageIndex === 1) {
       return <Videos />;
     }
-
     return <Posters />;
   }
 

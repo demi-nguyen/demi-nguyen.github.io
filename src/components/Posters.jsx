@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import "../css/Posters.css";
 import LightButton from "./LightButton";
+import rotate from "../assets/rotate.png";
+import wheel from "../assets/wheel.png";
 import routine from "../assets/posters/routine.webp";
 import questions from "../assets/posters/Questions.png";
 import moss from "../assets/posters/Moss-final.png";
@@ -8,18 +10,65 @@ import consuming from "../assets/posters/Consuming.png";
 import breath from "../assets/posters/Breathe-Ps.png";
 import porsche from "../assets/posters/Porsche.png";
 import yakult from "../assets/posters/Yakult-Ps.png";
-import rotate from "../assets/rotate.png";
-import wheel from "../assets/wheel.png";
 
 export default function Posters() {
   const [isLightOn, setIsLightOn] = useState(true);
-  const [xAxis, setXAxis] = useState(0);
-  const [yAxis, setYAxis] = useState(0);
   const [containerYAxis, setContainerYAxis] = useState(0);
-  const [zoom, setZoom] = useState(0);
-  const xLimit = { min: -200, max: 200 };
-  const yLimit = { min: -300, max: 300 };
-  const maxZoom = 5;
+  const xLimit = { min: -10, max: 10 };
+  const yLimit = { min: -10, max: 10 };
+  const maxZoom = 0.5;
+  const postersRefs = useRef([]);
+  const currentEntryRef = useRef(0);
+
+  const [posters, setPosters] = useState([
+    { id: crypto.randomUUID(), url: routine, xAxis: 0, yAxis: 0, zoom: 0 },
+    { id: crypto.randomUUID(), url: questions, xAxis: 0, yAxis: 0, zoom: 0 },
+    { id: crypto.randomUUID(), url: moss, xAxis: 0, yAxis: 0, zoom: 0 },
+    { id: crypto.randomUUID(), url: consuming, xAxis: 0, yAxis: 0, zoom: 0 },
+    { id: crypto.randomUUID(), url: breath, xAxis: 0, yAxis: 0, zoom: 0 },
+    { id: crypto.randomUUID(), url: porsche, xAxis: 0, yAxis: 0, zoom: 0 },
+    { id: crypto.randomUUID(), url: yakult, xAxis: 0, yAxis: 0, zoom: 0 },
+  ]);
+
+  function handleXAxis(index, value) {
+    setPosters((prevPosters) =>
+      prevPosters.map((poster, i) =>
+        i === index ? { ...poster, xAxis: value } : poster
+      )
+    );
+  }
+
+  function handleYAxis(index, value) {
+    setPosters((prevPosters) =>
+      prevPosters.map((poster, i) =>
+        i === index ? { ...poster, yAxis: value } : poster
+      )
+    );
+  }
+
+  function handleZoom(index, value) {
+    setPosters((prevPosters) =>
+      prevPosters.map((poster, i) =>
+        i === index ? { ...poster, zoom: value } : poster
+      )
+    );
+  }
+
+  function handleResetYAxis() {
+    setPosters(
+      posters.map((poster) => {
+        return { ...poster, yAxis: 0 };
+      })
+    );
+  }
+
+  function handleResetXAxis() {
+    setPosters(
+      posters.map((poster) => {
+        return { ...poster, xAxis: 0 };
+      })
+    );
+  }
 
   function toggleIsLightOn() {
     if (isLightOn) {
@@ -54,10 +103,27 @@ export default function Posters() {
     };
   }, []);
 
-  const scale = 1 + zoom;
-  const posterStyle = {
-    transform: `scaleX(-${scale}) scaleY(${scale}) translateX(${xAxis}px) translateY(${yAxis}px)`,
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const newIndex = parseInt(entry.target.dataset.index, 10);
+            if (newIndex !== currentEntryRef.current) {
+              currentEntryRef.current = newIndex;
+            }
+          }
+        });
+      },
+      { threshold: 0.5 } // Trigger when 50% of the element is visible
+    );
+
+    postersRefs.current.forEach((poster) => {
+      if (poster && poster instanceof Element) observer.observe(poster);
+    });
+
+    return () => observer.disconnect();
+  }, [postersRefs]);
 
   return (
     <div className="poster-wrapper">
@@ -66,56 +132,59 @@ export default function Posters() {
           <div className="paper">
             <div
               className="poster-container"
-              style={{ transform: `translateY(-${containerYAxis}px)` }}
+              style={{ transform: `translateY(-${containerYAxis}rem)` }}
             >
-              <div className="poster-viewer">
-                <img src={routine} className="poster" style={posterStyle} />
-              </div>
-              <div className="poster-viewer">
-                <img src={questions} className="poster" style={posterStyle} />
-              </div>
-              <div className="poster-viewer">
-                <img src={consuming} className="poster" style={posterStyle} />
-              </div>
-              <div className="poster-viewer">
-                <img src={moss} className="poster" style={posterStyle} />
-              </div>
-              <div className="poster-viewer">
-                <img src={breath} className="poster" style={posterStyle} />
-              </div>
-              <div className="poster-viewer">
-                <img src={porsche} className="poster" style={posterStyle} />
-              </div>
-              <div className="poster-viewer">
-                <img src={yakult} className="poster" style={posterStyle} />
-              </div>
+              {posters.map((poster, index) => (
+                <div
+                  className="poster-viewer"
+                  key={poster.id}
+                  ref={(el) => (postersRefs.current[index] = el)}
+                  data-index={index}
+                >
+                  <Poster
+                    url={poster.url}
+                    index={index}
+                    xAxis={poster.xAxis}
+                    yAxis={poster.yAxis}
+                    zoom={poster.zoom}
+                  />
+                </div>
+              ))}
             </div>
           </div>
           {!isLightOn && <div className="light-overlay"></div>}
           {!isLightOn && <div className="light-shadow-overlay"></div>}
         </div>
         <LightButton isOn={isLightOn} toggleIsOn={toggleIsLightOn} />
-        <ZoomParameter setZoom={setZoom} max={maxZoom} />
+        <ZoomParameter
+          setZoom={handleZoom}
+          index={currentEntryRef.current}
+          max={maxZoom}
+        />
         <div className="rotate-buttons">
           <RotatableButton
-            handleAxis={setXAxis}
+            handleAxis={handleXAxis}
+            handleResetAxis={handleResetXAxis}
+            index={currentEntryRef.current}
             imgUrl={rotate}
-            minPx={xLimit.min}
-            maxPx={xLimit.max}
+            min={xLimit.min}
+            max={xLimit.max}
           />
           <RotatableButton
-            handleAxis={setYAxis}
+            handleAxis={handleYAxis}
+            handleResetAxis={handleResetYAxis}
+            index={currentEntryRef.current}
             imgUrl={rotate}
-            minPx={yLimit.min}
-            maxPx={yLimit.max}
+            min={yLimit.min}
+            max={yLimit.max}
           />
         </div>
       </div>
       <RotatableButton
         handleAxis={setContainerYAxis}
         imgUrl={wheel}
-        minPx={0}
-        maxPx={4350}
+        min={0}
+        max={270}
       />
       <div className="frame-bottom-left"></div>
       <div className="frame-bottom">
@@ -127,18 +196,45 @@ export default function Posters() {
   );
 }
 
-function RotatableButton({ handleAxis, imgUrl, minPx, maxPx }) {
+function Poster({ url, index, xAxis, yAxis, zoom }) {
+  const scale = 1 + zoom;
+  const posterStyle = {
+    width: "100%",
+    objectFit: "contain",
+    transform: `scaleX(-${scale}) scaleY(${scale}) translateX(${xAxis}rem) translateY(${yAxis}rem)`,
+  };
+
+  return (
+    <img
+      className="poster"
+      src={url}
+      alt=""
+      loading={`${index > 0 ? "lazy" : "eager"}`}
+      style={posterStyle}
+    />
+  );
+}
+
+function RotatableButton({
+  handleAxis,
+  handleResetAxis,
+  index = -1,
+  imgUrl,
+  min,
+  max,
+}) {
   const [rotation, setRotation] = useState(0);
   const isDragging = useRef(false);
   const center = useRef({ x: 0, y: 0 });
   const prevAngle = useRef(0);
   const buttonRef = useRef(null);
-  const pxPerDeg = (maxPx - minPx) / 360;
+  const remValue = 16;
+  const remPerDeg = ((max - min) / 360 / remValue) * 2; // x2 to improve UX
 
   // Given a current angle (degrees)
-  const mapDegToPx = (deg) => {
-    const px = deg * pxPerDeg;
-    return Math.max(minPx, Math.min(maxPx, px));
+  const mapDegToRem = (deg) => {
+    const rem = deg * remPerDeg;
+    return Math.max(min, Math.min(max, rem));
   };
 
   const getAngle = (x, y) => {
@@ -149,6 +245,11 @@ function RotatableButton({ handleAxis, imgUrl, minPx, maxPx }) {
 
   const handleRotation = (rotation) => {
     setRotation(rotation);
+  };
+
+  const handleReset = () => {
+    setRotation(0);
+    handleResetAxis();
   };
 
   const handlePointerDown = (e) => {
@@ -163,6 +264,7 @@ function RotatableButton({ handleAxis, imgUrl, minPx, maxPx }) {
 
     prevAngle.current = getAngle(e.clientX, e.clientY);
     buttonRef.current.setPointerCapture(e.pointerId);
+    e.preventDefault();
   };
 
   const handlePointerMove = (e) => {
@@ -178,8 +280,14 @@ function RotatableButton({ handleAxis, imgUrl, minPx, maxPx }) {
     const newRotation = rotation + delta;
 
     handleRotation(newRotation);
-    const px = mapDegToPx(newRotation);
-    handleAxis(px);
+    const rem = mapDegToRem(newRotation);
+    if (index >= 0) {
+      handleAxis(index, rem);
+      console.log(`change poster ${index} value to ${rem}`);
+    } else {
+      handleAxis(rem);
+      console.log(`change value to ${rem}`);
+    }
 
     prevAngle.current = currentAngle;
   };
@@ -187,11 +295,6 @@ function RotatableButton({ handleAxis, imgUrl, minPx, maxPx }) {
   const handlePointerUp = () => {
     isDragging.current = false;
     setBodyUserSelect("");
-  };
-
-  const handleReset = () => {
-    setRotation(0);
-    handleAxis(0);
   };
 
   const setBodyUserSelect = (value) => {
@@ -218,7 +321,7 @@ function RotatableButton({ handleAxis, imgUrl, minPx, maxPx }) {
   );
 }
 
-function ZoomParameter({ setZoom, max }) {
+function ZoomParameter({ setZoom, index, max }) {
   const draggableRef = useRef(null);
   const isDraggingRef = useRef(false);
   const startRef = useRef(0);
@@ -243,7 +346,7 @@ function ZoomParameter({ setZoom, max }) {
     const distance = (startRef.current - e.clientY) / remValue;
     if (distance < paramHeight && distance >= 0) {
       draggableRef.current.style.bottom = `${distance}rem`;
-      setZoom(distance * zoomPerDistance);
+      setZoom(index, distance * zoomPerDistance);
     }
   };
 
