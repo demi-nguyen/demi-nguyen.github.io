@@ -1,36 +1,12 @@
-import { useState } from "react";
 import Navbar from "./Navbar";
-import Info from "./Info";
-import Videos from "./Videos";
 import cursorImage from "../assets/cursor.png";
-import Posters from "./Posters";
+import { Outlet } from "react-router";
 
 function App() {
-  const [pageIndex, setPageIndex] = useState(0);
-  const [isLightOn, setIsLightOn] = useState(true);
-
-  function handlePageIndex(index) {
-    if (index === pageIndex) {
-      return;
-    }
-    setPageIndex(index);
-  }
-
-  function Content() {
-    if (pageIndex === 0) {
-      return <Info />;
-    }
-
-    if (pageIndex === 1) {
-      return <Videos isLightOn={isLightOn} setIsLightOn={setIsLightOn} />;
-    }
-    return <Posters isLightOn={isLightOn} setIsLightOn={setIsLightOn} />;
-  }
-
   return (
     <div className="wrapper" style={{ cursor: `url(${cursorImage}), auto` }}>
-      <Navbar handlePageIndex={handlePageIndex} pageIndex={pageIndex} />
-      <Content />
+      <Navbar />
+      <Outlet />
     </div>
   );
 }

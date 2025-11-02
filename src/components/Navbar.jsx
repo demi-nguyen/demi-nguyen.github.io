@@ -2,17 +2,15 @@ import "../css/Navbar.css";
 import hamburgerMenu from "../assets/hamburger-menu.svg";
 import closeMenu from "../assets/close.svg";
 import { useState } from "react";
+import { Link, useLocation } from "react-router";
 
-export default function Navbar({ handlePageIndex, pageIndex }) {
+export default function Navbar() {
   const [isShow, setIsShow] = useState(false);
+  const location = useLocation();
+  const path = location.pathname;
 
   function toggleIsShow() {
     setIsShow(!isShow);
-  }
-
-  function handleNavLinkClicked(index) {
-    handlePageIndex(index);
-    toggleIsShow(false);
   }
 
   return (
@@ -31,27 +29,20 @@ export default function Navbar({ handlePageIndex, pageIndex }) {
       <div className={`nav-dropdown${isShow ? "" : " hidden"}`}>
         <ul>
           <li>
-            <NavLink
-              index={0}
-              title="Info"
-              pageIndex={pageIndex}
-              handleNavLinkClicked={handleNavLinkClicked}
-            />
+            <NavLink to="/" title="Info" isActive={path === "/"} />
           </li>
           <li>
             <NavLink
-              index={1}
+              to="/videos"
               title="Video Editing"
-              pageIndex={pageIndex}
-              handleNavLinkClicked={handleNavLinkClicked}
+              isActive={path === "/videos"}
             />
           </li>
           <li>
             <NavLink
-              index={2}
+              to="/posters"
               title="Posters"
-              pageIndex={pageIndex}
-              handleNavLinkClicked={handleNavLinkClicked}
+              isActive={path === "/posters"}
             />
           </li>
         </ul>
@@ -60,11 +51,10 @@ export default function Navbar({ handlePageIndex, pageIndex }) {
   );
 }
 
-function NavLink({ index, pageIndex, handleNavLinkClicked, title }) {
-  const isCurrent = index === pageIndex;
+function NavLink({ to, title, isActive }) {
   return (
-    <button onClick={() => handleNavLinkClicked(index)} disabled={isCurrent}>
+    <Link to={to} disabled={isActive}>
       {title}
-    </button>
+    </Link>
   );
 }

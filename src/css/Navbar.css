@@ -29,7 +29,7 @@ nav {
   list-style-type: none;
 }
 
-.nav-dropdown li > button {
+.nav-dropdown li > a {
   width: 100%;
   background-color: transparent;
   border: none;
@@ -40,13 +40,15 @@ nav {
   text-align: left;
   cursor: pointer;
   transition: color 0.2s;
+  text-decoration: none;
+  display: inline-block;
 }
 
-.nav-dropdown li > button:not(:disabled):hover {
+.nav-dropdown li > a:not(:disabled):hover {
   color: red;
 }
 
-.nav-dropdown li > button:disabled {
+.nav-dropdown li > a:disabled {
   color: rgb(185, 173, 173);
   cursor: auto;
 }

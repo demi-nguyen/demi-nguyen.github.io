@@ -5,8 +5,9 @@ import lessVolume from "../assets/less-volume.png";
 import moreVolume from "../assets/more-volume.png";
 import { useEffect, useRef, useState } from "react";
 import LightButton from "./LightButton";
+import useLight from "../hooks/useLight";
 
-export default function Videos({ isLightOn, setIsLightOn }) {
+export default function Videos() {
   const [isPlaying, setIsPlaying] = useState(false);
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
@@ -14,6 +15,8 @@ export default function Videos({ isLightOn, setIsLightOn }) {
   const [volume, setVolume] = useState(50);
   const [isVert, setIsVert] = useState(true);
   const videosLengthRef = useRef(0);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 560);
+  const { isLightOn, setIsLightOn } = useLight();
 
   function toggleIsLightOn() {
     if (isLightOn) {
@@ -25,14 +28,28 @@ export default function Videos({ isLightOn, setIsLightOn }) {
   }
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 560);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     const videos = [
-      { id: "VAmACbJgl8g", style: { transform: "scale(1)" } },
-      { id: "emMwV8KdneA", style: { transform: "scale(1)" } },
+      { id: "89tLbgraZf8", style: { transform: "scale(1)" } },
+      { id: "kRi_nMP03Ao", style: { transform: "scale(1)" } },
       {
-        id: "q3XTGZ6HuM8",
+        id: "UmyJGay4CR4",
         style: { transform: "scale(1)" },
       },
-      { id: "hnV57V3CB0M", style: { transform: "scale(1)" } },
+      { id: "Sd5NrsKSVKc", style: { transform: "scale(1)" } },
     ];
     const vertVideos = [
       {
@@ -40,6 +57,7 @@ export default function Videos({ isLightOn, setIsLightOn }) {
         style: { transform: "scale(1.8) rotate(90deg)" },
       },
       { id: "jtyp5CFY6ZM", style: { transform: "scale(1.8) rotate(90deg)" } },
+      { id: "I9oq3-QqqCg", style: { transform: "scale(1.8) rotate(90deg)" } },
     ];
     videosLengthRef.current = !isVert ? videos.length : vertVideos.length;
 
@@ -146,6 +164,7 @@ export default function Videos({ isLightOn, setIsLightOn }) {
           {!isLightOn && !isPlaying && <div className="light-overlay"></div>}
           {!isLightOn && <div className="light-shadow-overlay"></div>}
         </div>
+        {isVert && <Info />}
         <div className="button-bar">
           <div className="button-bar-frame">
             <div className="buttons-attachment">
@@ -208,8 +227,10 @@ export default function Videos({ isLightOn, setIsLightOn }) {
               pausePlayer={pausePlayer}
               playPlayer={playPlayer}
               isVert={isVert}
+              isSmallScreen={isSmallScreen}
             />
             <LightButton isOn={isLightOn} toggleIsOn={toggleIsLightOn} />
+            {!isVert && <p className="selected-works-text">SELECTED WORKS</p>}
           </div>
           <div className="frame-bottom-left"></div>
           <div className="frame-bottom"></div>
@@ -234,9 +255,15 @@ export default function Videos({ isLightOn, setIsLightOn }) {
   );
 }
 
-function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
+function DraggableParameter({
+  player,
+  pausePlayer,
+  playPlayer,
+  isVert,
+  isSmallScreen,
+}) {
   const remValue = 16;
-  const paramWidth = !isVert ? 32.5 : 13.5;
+  const paramWidth = !isVert ? 32.5 : isSmallScreen ? 30.5 : 15.5;
   const marginTop = !isVert ? 4.5 : 4;
   const draggableRef = useRef(null);
   const paramFillRef = useRef(null);
@@ -310,7 +337,6 @@ function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
       startRef.current = !isVert ? rect.left : rect.bottom;
       draggableRef.current.style.cursor = "grabbing";
 
-      // Force a repaint to flush layout
       draggableRef.current.getBoundingClientRect();
 
       draggableRef.current.setPointerCapture(e.pointerId);
@@ -324,7 +350,6 @@ function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
     const distance = !isVert
       ? e.clientX - startRef.current
       : startRef.current - e.clientY;
-    // improve dragging at the lower-end UX
     const remDistance = distance / remValue > 0.1 ? distance / remValue : 0;
     if (remDistance < paramWidth && remDistance >= 0) {
       draggableRef.current.style.left = `${26 + remDistance}rem`;
@@ -366,5 +391,49 @@ function DraggableParameter({ player, pausePlayer, playPlayer, isVert }) {
         style={videoDraggableStyle}
       ></div>
     </>
+  );
+}
+
+function Info() {
+  // const [isShow, setIsShow] = useState(false);
+
+  // function toggleIsShow() {
+  //   setIsShow(!isShow);
+  // }
+
+  return (
+    <div className="info-video">
+      <div className="info-container">
+        {/* <button onClick={toggleIsShow}>
+          {" "}
+          <svg
+            width="40px"
+            height="40px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="#6f6f71"
+            transform="rotate(0)matrix(1, 0, 0, 1, 0, 0)"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M13.6 3H10V6.6H13.6V3ZM13.6 10.2H10V21H13.6V10.2Z"
+                fill="#6f6f71"
+              ></path>{" "}
+            </g>
+          </svg>
+        </button> */}
+        <p>Researched, scripted and edited independently</p>
+      </div>
+    </div>
   );
 }

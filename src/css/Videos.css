@@ -331,3 +331,39 @@
     margin-bottom: 15rem;
   }
 }
+
+.info-video {
+  position: absolute;
+  left: 0.85rem;
+  top: 0.25rem;
+  z-index: 2;
+  transform-origin: left;
+  transform: rotate(90deg);
+  width: 16.5rem;
+}
+
+.info-video .info-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.info-video .info-container p {
+  position: absolute;
+  right: 0;
+  bottom: -0.5rem;
+  font-size: 0.65rem;
+  color: var(--nav-text);
+  font-family: Helvetica, sans-serif;
+}
+
+.selected-works-text {
+  position: absolute;
+  left: 39rem;
+  top: 2.5rem;
+  font-size: 0.9rem;
+}
+
+.rotatable-button:nth-child(2) {
+  transform: rotate(90deg);
+}

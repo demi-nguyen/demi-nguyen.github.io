@@ -1,8 +1,14 @@
 .info {
   position: absolute;
-  bottom: 4.5rem;
-  right: max(3rem, 15%);
-  font-size: max(1.5rem, 20px);
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* bottom: 45%;
+  left: max(3rem, 43%); */
+  font-size: max(1.5rem, 24px);
 }
 
 .info p {

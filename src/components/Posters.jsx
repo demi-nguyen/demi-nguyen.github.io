@@ -10,14 +10,16 @@ import consuming from "../assets/posters/Consuming.png";
 import breath from "../assets/posters/Breathe-Ps.png";
 import porsche from "../assets/posters/Porsche.png";
 import yakult from "../assets/posters/Yakult-Ps.png";
+import useLight from "../hooks/useLight";
 
-export default function Posters({ isLightOn, setIsLightOn }) {
+export default function Posters() {
   const [containerYAxis, setContainerYAxis] = useState(0);
   const xLimit = { min: -10, max: 10 };
   const yLimit = { min: -10, max: 10 };
   const maxZoom = 0.5;
   const postersRefs = useRef([]);
   const currentEntryRef = useRef(0);
+  const { isLightOn, setIsLightOn } = useLight();
 
   const [posters, setPosters] = useState([
     { id: crypto.randomUUID(), url: routine, xAxis: 0, yAxis: 0, zoom: 0 },

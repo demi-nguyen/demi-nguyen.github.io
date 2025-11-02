@@ -6,21 +6,17 @@ export default function Info() {
       <p>nnttran1@gmail.com</p>
       <p className="links">
         <a
-          href="https://www.tiktok.com/@midnightmacbook?is_from_webapp=1&sender_device=pc"
+          href="https://www.tiktok.com/@previousworks?_r=1&_t=ZS-912pOp4hf9s"
           target="_blank"
         >
           TikTok
         </a>{" "}
         /{" "}
         <a
-          href="https://www.instagram.com/demi.earth/?utm_source=ig_web_button_share_sheet"
+          href="https://www.instagram.com/de___mi?igsh=MWszcWxlNG02czh4dw=="
           target="_blank"
         >
           Insta
-        </a>{" "}
-        /{" "}
-        <a href="https://www.are.na/demi-nguyen/channels" target="_blank">
-          Are.na
         </a>
       </p>
     </div>
